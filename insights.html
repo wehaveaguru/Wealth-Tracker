@@ -521,14 +521,14 @@
 
         #file-input { display: none; }
 
-        /* ===== PIGGY BANK OVERLAY ===== */
-        .piggy-overlay {
+        /* ===== DATA SCANNER OVERLAY ===== */
+        .scanner-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(250, 248, 255, 0.97);
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -537,272 +537,348 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease;
+            color: #f8fafc;
         }
 
-        .piggy-overlay.active {
+        .scanner-overlay.active {
             opacity: 1;
             pointer-events: all;
         }
 
-        .piggy-overlay.fade-out {
+        .scanner-overlay.fade-out {
             opacity: 0;
             transition: opacity 0.8s ease;
         }
 
-        .piggy-container {
+        .scanner-container {
             position: relative;
-            width: 420px;
-            height: 400px;
-        }
-
-        .piggy-status {
-            font-family: 'EB Garamond', serif;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-top: 32px;
-            text-align: center;
-        }
-
-        .piggy-dots::after {
-            content: '';
-            animation: loading-dots 1.5s steps(4, end) infinite;
-        }
-
-        @keyframes loading-dots {
-            0% { content: ''; }
-            25% { content: '.'; }
-            50% { content: '..'; }
-            75% { content: '...'; }
-        }
-
-        .piggy-progress {
-            width: 200px;
-            height: 4px;
-            background: var(--outline-variant);
-            border-radius: 2px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-
-        .piggy-progress-bar {
-            height: 100%;
-            width: 0%;
-            background: var(--primary);
-            border-radius: 2px;
-            transition: width 0.3s ease;
-        }
-
-        /* Piggy bank image */
-        .piggy-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 8px 32px rgba(244, 160, 181, 0.3));
-            transition: opacity 0.15s ease;
-        }
-
-        .piggy-img-broken {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 8px 32px rgba(244, 160, 181, 0.3));
-            opacity: 0;
-            transition: opacity 0.15s ease;
-        }
-
-        /* Wobble phase */
-        .piggy-wobble .piggy-img {
-            animation: wobble 0.3s ease-in-out infinite;
-            transform-origin: 50% 100%;
-        }
-
-        @keyframes wobble {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-4deg); }
-            75% { transform: rotate(4deg); }
-        }
-
-        .piggy-wobble-intense .piggy-img {
-            animation: wobble-intense 0.15s ease-in-out infinite;
-            transform-origin: 50% 100%;
-        }
-
-        @keyframes wobble-intense {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-8deg); }
-            75% { transform: rotate(8deg); }
-        }
-
-        /* Crack overlay */
-        .crack-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .piggy-cracking .crack-overlay {
-            opacity: 1;
-        }
-
-        .crack-line {
-            stroke-dasharray: 200;
-            stroke-dashoffset: 200;
-        }
-
-        .piggy-cracking .crack-line {
-            animation: draw-crack 0.6s ease-out forwards;
-        }
-
-        .piggy-cracking .crack-line:nth-child(2) { animation-delay: 0.15s; }
-        .piggy-cracking .crack-line:nth-child(3) { animation-delay: 0.3s; }
-        .piggy-cracking .crack-line:nth-child(4) { animation-delay: 0.4s; }
-
-        @keyframes draw-crack {
-            to { stroke-dashoffset: 0; }
-        }
-
-        /* Explode phase — swap images */
-        .piggy-explode .piggy-img {
-            opacity: 0;
-        }
-
-        .piggy-explode .piggy-img-broken {
-            opacity: 1;
-            animation: broken-reveal 0.6s ease-out forwards;
-        }
-
-        @keyframes broken-reveal {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.08); opacity: 1; }
-            100% { transform: scale(1.15); opacity: 0; }
-        }
-
-        .piggy-explode .crack-overlay {
-            opacity: 0;
-        }
-
-        /* Flash & shockwave */
-        .piggy-flash {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 200px;
-            height: 200px;
-            margin: -100px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 70%);
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .piggy-explode .piggy-flash {
-            animation: flash-burst 0.4s ease-out forwards;
-        }
-
-        @keyframes flash-burst {
-            0% { transform: scale(0.3); opacity: 1; }
-            100% { transform: scale(4); opacity: 0; }
-        }
-
-        .piggy-shockwave {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 80px;
-            height: 80px;
-            margin: -40px;
-            border-radius: 50%;
-            border: 3px solid rgba(244, 160, 181, 0.6);
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .piggy-explode .piggy-shockwave {
-            animation: shockwave-ring 0.7s ease-out forwards;
-        }
-
-        @keyframes shockwave-ring {
-            0% { transform: scale(0.5); opacity: 1; }
-            100% { transform: scale(6); opacity: 0; }
-        }
-
-        /* Coins */
-        .coin {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #FFD700, #FFA500);
-            box-shadow: inset 0 -2px 4px rgba(139, 90, 43, 0.3), 0 2px 8px rgba(255, 215, 0, 0.3);
-            top: 50%;
-            left: 50%;
-            opacity: 0;
-            pointer-events: none;
+            width: 480px;
+            height: 420px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 9px;
-            font-weight: 800;
-            color: rgba(139, 90, 43, 0.5);
+            perspective: 1000px;
         }
 
-        .coin.fly {
-            animation: coin-fly var(--dur) ease-out var(--delay) forwards;
+        /* 3D Ledger Card */
+        .ledger-card {
+            position: relative;
+            width: 220px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            transform: rotateX(25deg) rotateY(-15deg) rotateZ(5deg);
+            transform-style: preserve-3d;
+            box-shadow: -20px 20px 40px rgba(0, 0, 0, 0.5),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: card-float 4s ease-in-out infinite;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.5s ease, 
+                        box-shadow 0.8s ease;
         }
 
-        @keyframes coin-fly {
-            0% { transform: translate(0, 0) rotate(0deg) scale(0.5); opacity: 1; }
-            20% { opacity: 1; transform: translate(calc(var(--tx) * 0.3), calc(var(--ty) * 0.3)) rotate(calc(var(--rot) * 0.3)) scale(1); }
-            80% { opacity: 0.8; }
-            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.2); opacity: 0; }
+        @keyframes card-float {
+            0%, 100% { transform: rotateX(25deg) rotateY(-15deg) rotateZ(5deg) translateY(0); }
+            50% { transform: rotateX(23deg) rotateY(-13deg) rotateZ(6deg) translateY(-8px); }
         }
 
-        /* Sparkles */
-        .sparkle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            top: 50%;
-            left: 50%;
-            margin: -2px;
-            pointer-events: none;
-            opacity: 0;
+        /* Ledger card skeleton items */
+        .ledger-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
         }
 
-        .sparkle::before, .sparkle::after {
+        .ledger-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            opacity: 0.8;
+        }
+
+        .ledger-line-short {
+            height: 8px;
+            width: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        .ledger-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ledger-line {
+            height: 6px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ledger-line::after {
             content: '';
             position: absolute;
-            background: #FFD700;
-        }
-
-        .sparkle::before {
+            top: 0;
+            left: -100%;
             width: 100%;
-            height: 2px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .sparkle::after {
-            width: 2px;
             height: 100%;
-            left: 50%;
-            transform: translateX(-50%);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            animation: skeleton-glow 2s infinite linear;
         }
 
-        .sparkle.fly {
-            animation: sparkle-fly var(--dur) ease-out var(--delay) forwards;
+        @keyframes skeleton-glow {
+            to { left: 100%; }
         }
 
-        @keyframes sparkle-fly {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            50% { opacity: 0.8; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        .ledger-line-mid {
+            height: 6px;
+            width: 70%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        /* Holographic grid lines */
+        .hologram-grid {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+            background-size: 15px 15px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Scanning Laser Beam */
+        .scanner-beam {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0) 0%, rgba(59, 130, 246, 0.8) 20%, #60a5fa 50%, rgba(59, 130, 246, 0.8) 80%, rgba(59, 130, 246, 0) 100%);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.4);
+            z-index: 10;
+            pointer-events: none;
+            animation: laser-sweep 2.5s infinite ease-in-out;
+        }
+
+        @keyframes laser-sweep {
+            0%, 100% { top: 0%; }
+            50% { top: 100%; }
+        }
+
+        /* Data Nodes Overlay */
+        .nodes-overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .data-node {
+            fill: #60a5fa;
+            filter: drop-shadow(0 0 8px #3b82f6);
+            opacity: 0.2;
+            transition: all 0.5s ease;
+        }
+
+        .data-node.connected {
+            fill: #f59e0b;
+            filter: drop-shadow(0 0 10px #f59e0b);
+            opacity: 0.9;
+            animation: pulse-node 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse-node {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        .connection-line {
+            stroke: #3b82f6;
+            stroke-width: 1;
+            stroke-dasharray: 6 4;
+            opacity: 0.15;
+            transition: all 0.5s ease;
+        }
+
+        .connection-line.active {
+            stroke: #f59e0b;
+            stroke-width: 1.5;
+            stroke-dasharray: 0;
+            opacity: 0.6;
+        }
+
+        /* Floating metadata tags during scan */
+        .floating-tag {
+            position: absolute;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #60a5fa;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .floating-tag.fly {
+            animation: tag-rise var(--dur) cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes tag-rise {
+            0% { transform: translate(0, 0) scale(0.8); opacity: 0; }
+            10% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0.9); opacity: 0; }
+        }
+
+        /* Crystallize & shockwave states */
+        .crystallize .ledger-card {
+            transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.1);
+            border-color: rgba(245, 158, 11, 0.6);
+            box-shadow: 0 0 80px rgba(245, 158, 11, 0.4);
+            opacity: 0.9;
+        }
+
+        .crystallize .scanner-beam {
+            animation: none;
+            top: 50%;
+            height: 12px;
+            background: #ffffff;
+            box-shadow: 0 0 30px #f59e0b, 0 0 60px #f59e0b;
+            transition: all 0.3s ease;
+            transform: scaleY(3);
+        }
+
+        .crystallize .data-node {
+            fill: #ffffff;
+            filter: drop-shadow(0 0 15px #f59e0b);
+            opacity: 1;
+        }
+
+        .crystallize .connection-line {
+            stroke: #f59e0b;
+            opacity: 0.8;
+        }
+
+        /* Laser scan blast burst */
+        .crystallize-blast {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid #f59e0b;
+            box-shadow: 0 0 20px #f59e0b;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .crystallize-burst .crystallize-blast {
+            animation: blast-expand 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        @keyframes blast-expand {
+            0% { transform: scale(0.1); opacity: 1; border-width: 8px; }
+            100% { transform: scale(6); opacity: 0; border-width: 1px; }
+        }
+
+        .crystallize-flash {
+            position: absolute;
+            inset: 0;
+            background: #ffffff;
+            opacity: 0;
+            z-index: 25;
+            pointer-events: none;
+        }
+
+        .crystallize-burst .crystallize-flash {
+            animation: flash-pulse 0.4s ease-out forwards;
+        }
+
+        @keyframes flash-pulse {
+            0% { opacity: 0; }
+            40% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .crystallize-burst .ledger-card {
+            transform: scale(0.9) rotateX(-10deg);
+            opacity: 0;
+            box-shadow: 0 0 120px rgba(245, 158, 11, 0.8);
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            transition: all 0.4s ease;
+        }
+
+        .crystallize-particle {
+            position: absolute;
+            background: radial-gradient(circle, #f59e0b 0%, rgba(251,191,36,0.3) 70%, transparent 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 18;
+        }
+
+        .crystallize-particle.fly {
+            animation: particle-explode var(--dur) cubic-bezier(0.1, 0.8, 0.3, 1) var(--delay) forwards;
+        }
+
+        @keyframes particle-explode {
+            0% { transform: translate(0, 0) scale(1.2); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0.1); opacity: 0; }
+        }
+
+        /* Status & progress stylings under dark mode */
+        .scanner-status {
+            font-family: 'EB Garamond', serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: #f8fafc;
+            margin-top: 36px;
+            text-align: center;
+            letter-spacing: 0.01em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            min-height: 32px;
+        }
+
+        .scanner-progress {
+            width: 260px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .scanner-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3b82f6, #f59e0b);
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+            transition: width 0.3s ease;
         }
 
         /* ===== DASHBOARD ===== */
@@ -900,7 +976,7 @@
         /* Charts grid */
         .charts-grid {
             display: grid;
-            grid-template-columns: 420px 1fr;
+            grid-template-columns: 540px 1fr;
             gap: 24px;
             margin-bottom: 36px;
         }
@@ -978,9 +1054,10 @@
         }
 
         .legend-item {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr auto 50px;
             align-items: center;
-            justify-content: space-between;
+            gap: 16px;
             padding: 8px 0;
             border-bottom: 1px solid rgba(198, 198, 206, 0.3);
             font-size: 13px;
@@ -992,6 +1069,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            min-width: 0;
         }
 
         .legend-dot {
@@ -1004,6 +1082,9 @@
         .legend-name {
             color: var(--on-surface);
             font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .legend-value {
@@ -1011,6 +1092,7 @@
             font-weight: 600;
             font-size: 12px;
             color: var(--on-surface-variant);
+            text-align: right;
         }
 
         .legend-pct {
@@ -1018,8 +1100,6 @@
             font-weight: 700;
             font-size: 12px;
             color: var(--primary);
-            margin-left: 8px;
-            min-width: 40px;
             text-align: right;
         }
 
@@ -1308,31 +1388,55 @@
     </style>
 </head>
 <body>
-    <!-- ===== PIGGY BANK OVERLAY ===== -->
-    <div class="piggy-overlay" id="piggy-overlay">
-        <div class="piggy-container" id="piggy-container">
-            <!-- Piggy Bank Image (proper 3D rendered, transparent with coins inside) -->
-            <img class="piggy-img" src="assets/piggy_bank.png" alt="Piggy Bank" draggable="false"/>
-            <img class="piggy-img-broken" src="assets/piggy_bank_broken.png" alt="Broken Piggy Bank" draggable="false"/>
+    <!-- ===== LEDGER SCANNER OVERLAY ===== -->
+    <div class="scanner-overlay" id="scanner-overlay">
+        <div class="scanner-container" id="scanner-container">
+            <!-- 3D Ledger Card -->
+            <div class="ledger-card" id="ledger-card">
+                <div class="hologram-grid"></div>
+                <div class="ledger-header">
+                    <div class="ledger-avatar"></div>
+                    <div class="ledger-line-short"></div>
+                </div>
+                <div class="ledger-body">
+                    <div class="ledger-line"></div>
+                    <div class="ledger-line"></div>
+                    <div class="ledger-line-mid"></div>
+                    <div class="ledger-line"></div>
+                    <div class="ledger-line-short"></div>
+                </div>
+                <div class="scanner-beam"></div>
+            </div>
 
-            <!-- Crack lines overlay (hidden until crack phase) -->
-            <svg class="crack-overlay" viewBox="0 0 420 400">
-                <path class="crack-line" d="M210,80 L225,150 L195,210 L230,280 L210,320" fill="none" stroke="rgba(100,50,60,0.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path class="crack-line" d="M260,110 L245,180 L270,240 L250,290" fill="none" stroke="rgba(100,50,60,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path class="crack-line" d="M155,130 L175,190 L158,250" fill="none" stroke="rgba(100,50,60,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path class="crack-line" d="M185,150 L200,200 L180,240 L195,280" fill="none" stroke="rgba(100,50,60,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- SVG Data Nodes & Connection Lines -->
+            <svg class="nodes-overlay" viewBox="0 0 480 420">
+                <!-- Connected lines -->
+                <line class="connection-line" id="line-1" x1="240" y1="210" x2="80" y2="100" />
+                <line class="connection-line" id="line-2" x1="240" y1="210" x2="110" y2="280" />
+                <line class="connection-line" id="line-3" x1="240" y1="210" x2="400" y2="90" />
+                <line class="connection-line" id="line-4" x1="240" y1="210" x2="410" y2="260" />
+                <line class="connection-line" id="line-5" x1="240" y1="210" x2="330" y2="340" />
+                <line class="connection-line" id="line-6" x1="240" y1="210" x2="100" y2="190" />
+
+                <!-- Node Circles -->
+                <circle class="data-node" id="node-1" cx="80" cy="100" r="5" />
+                <circle class="data-node" id="node-2" cx="110" cy="280" r="6" />
+                <circle class="data-node" id="node-3" cx="400" cy="90" r="5" />
+                <circle class="data-node" id="node-4" cx="410" cy="260" r="7" />
+                <circle class="data-node" id="node-5" cx="330" cy="340" r="6" />
+                <circle class="data-node" id="node-6" cx="100" cy="190" r="5" />
             </svg>
 
-            <!-- Flash & shockwave (hidden until explode) -->
-            <div class="piggy-flash"></div>
-            <div class="piggy-shockwave"></div>
+            <!-- Flash and Shockwave blasts -->
+            <div class="crystallize-blast"></div>
+            <div class="crystallize-flash"></div>
         </div>
 
-        <div class="piggy-status" id="piggy-status">
-            <span>Analyzing your spending</span><span class="piggy-dots"></span>
+        <div class="scanner-status" id="scanner-status">
+            <span>Analyzing bank ledger</span><span class="piggy-dots"></span>
         </div>
-        <div class="piggy-progress">
-            <div class="piggy-progress-bar" id="piggy-progress-bar"></div>
+        <div class="scanner-progress">
+            <div class="scanner-progress-bar" id="scanner-progress-bar"></div>
         </div>
     </div>
 
@@ -1627,10 +1731,10 @@
         // ===== DOM REFS =====
         const uploadState = document.getElementById('upload-state');
         const dashboardState = document.getElementById('dashboard-state');
-        const piggyOverlay = document.getElementById('piggy-overlay');
-        const piggyContainer = document.getElementById('piggy-container');
-        const piggyStatus = document.getElementById('piggy-status');
-        const piggyProgressBar = document.getElementById('piggy-progress-bar');
+        const scannerOverlay = document.getElementById('scanner-overlay');
+        const scannerContainer = document.getElementById('scanner-container');
+        const scannerStatus = document.getElementById('scanner-status');
+        const scannerProgressBar = document.getElementById('scanner-progress-bar');
         const uploadZone = document.getElementById('upload-zone');
         const fileInput = document.getElementById('file-input');
         const browseBtn = document.getElementById('browse-btn');
@@ -1719,7 +1823,7 @@
             formData.append('file', file);
 
             // Show overlay immediately
-            showPiggyOverlay();
+            showScannerOverlay();
 
             try {
                 const response = await fetch(API_URL, {
@@ -1733,46 +1837,63 @@
                 startAnalysis(data, false);
             } catch (err) {
                 // Backend unavailable — fall back to demo with notice
-                piggyStatus.innerHTML = '<span style="color:var(--gold);">Backend unavailable — using demo data</span>';
+                scannerStatus.innerHTML = '<span style="color:var(--gold);">Backend unavailable — using demo data</span>';
                 setTimeout(() => {
                     currentData = DEMO_DATA;
-                    runPiggyAnimation();
+                    runScannerAnimation();
                 }, 1500);
             }
         }
 
+        // ===== CONSTANTS FOR SCANNING =====
+        const SCAN_TAGS = [
+            '$124.99', 'Amazon', 'Shopping', 'Starbucks', 'Food & Dining', 
+            '$15.99', 'Netflix', 'Entertainment', 'Uber', 'Transport', 
+            '$87.50', 'Whole Foods', 'Groceries', 'Delta Airlines', 'Travel',
+            '$142.00', 'Bills', 'Utilities', 'CVS Pharmacy', 'Health'
+        ];
+
+        let lastNodeActivated = 0;
+        let lastTagEmittedProgress = 0;
+
         // ===== ANALYSIS PIPELINE =====
         function startAnalysis(data, isDemo) {
             currentData = data;
-            showPiggyOverlay();
+            showScannerOverlay();
 
             if (isDemo) {
                 // Simulate processing delay for demo
-                animateProgress(0, 80, 1200, () => {
-                    piggyStatus.innerHTML = '<span>Almost there</span><span class="piggy-dots"></span>';
-                    animateProgress(80, 100, 600, () => {
-                        piggyStatus.innerHTML = '<span style="color:var(--gain);">Ready!</span>';
-                        setTimeout(runPiggyAnimation, 500);
+                animateProgress(0, 80, 1500, () => {
+                    scannerStatus.innerHTML = '<span>Almost there</span><span class="piggy-dots"></span>';
+                    animateProgress(80, 100, 700, () => {
+                        scannerStatus.innerHTML = '<span style="color:#f59e0b;">Ledger Compiled!</span>';
+                        setTimeout(runScannerAnimation, 500);
                     });
                 });
             } else {
-                animateProgress(0, 100, 800, () => {
-                    piggyStatus.innerHTML = '<span style="color:var(--gain);">Ready!</span>';
-                    setTimeout(runPiggyAnimation, 500);
+                animateProgress(0, 100, 1000, () => {
+                    scannerStatus.innerHTML = '<span style="color:#f59e0b;">Ledger Compiled!</span>';
+                    setTimeout(runScannerAnimation, 500);
                 });
             }
         }
 
-        function showPiggyOverlay() {
+        function showScannerOverlay() {
             uploadState.classList.add('hidden');
-            piggyProgressBar.style.width = '0%';
-            piggyStatus.innerHTML = '<span>Analyzing your spending</span><span class="piggy-dots"></span>';
-            piggyContainer.className = 'piggy-container';
-            piggyOverlay.classList.remove('fade-out');
-            piggyOverlay.classList.add('active');
+            scannerProgressBar.style.width = '0%';
+            scannerStatus.innerHTML = '<span>Analyzing bank ledger</span><span class="piggy-dots"></span>';
+            scannerContainer.className = 'scanner-container';
+            scannerOverlay.classList.remove('fade-out');
+            scannerOverlay.classList.add('active');
 
-            // Clear any old coins/sparkles
-            piggyContainer.querySelectorAll('.coin, .sparkle').forEach(el => el.remove());
+            // Reset nodes and connections
+            lastNodeActivated = 0;
+            lastTagEmittedProgress = 0;
+            scannerContainer.querySelectorAll('.data-node').forEach(el => el.classList.remove('connected'));
+            scannerContainer.querySelectorAll('.connection-line').forEach(el => el.classList.remove('active'));
+
+            // Clear old tags or particles
+            scannerContainer.querySelectorAll('.floating-tag, .crystallize-particle').forEach(el => el.remove());
         }
 
         function animateProgress(from, to, duration, callback) {
@@ -1782,7 +1903,29 @@
                 const progress = Math.min(elapsed / duration, 1);
                 const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
                 const value = from + (to - from) * eased;
-                piggyProgressBar.style.width = value + '%';
+                
+                scannerProgressBar.style.width = value + '%';
+                
+                // Activate nodes sequentially as progress fills
+                const nodeCount = 6;
+                const progressStep = 100 / nodeCount;
+                const currentNodeToActivate = Math.floor(value / progressStep);
+                if (currentNodeToActivate > lastNodeActivated && currentNodeToActivate <= nodeCount) {
+                    for (let i = 1; i <= currentNodeToActivate; i++) {
+                        const node = document.getElementById(`node-${i}`);
+                        const line = document.getElementById(`line-${i}`);
+                        if (node) node.classList.add('connected');
+                        if (line) line.classList.add('active');
+                    }
+                    lastNodeActivated = currentNodeToActivate;
+                }
+
+                // Emit floating category tags every 15% progress
+                if (value - lastTagEmittedProgress >= 15) {
+                    emitFloatingTag();
+                    lastTagEmittedProgress = value;
+                }
+
                 if (progress < 1) {
                     requestAnimationFrame(step);
                 } else {
@@ -1792,101 +1935,117 @@
             requestAnimationFrame(step);
         }
 
-        // ===== PIGGY BANK ANIMATION =====
-        function runPiggyAnimation() {
-            // Phase 1: Wobble (0 - 1s)
-            piggyContainer.classList.add('piggy-wobble');
+        function emitFloatingTag() {
+            const tag = document.createElement('div');
+            tag.className = 'floating-tag';
+            
+            const val = SCAN_TAGS[Math.floor(Math.random() * SCAN_TAGS.length)];
+            
+            let icon = 'description';
+            if (val.startsWith('$')) icon = 'payments';
+            else if (['Amazon', 'Shopping'].includes(val)) icon = 'shopping_bag';
+            else if (['Starbucks', 'Food & Dining'].includes(val)) icon = 'restaurant';
+            else if (['Netflix', 'Entertainment'].includes(val)) icon = 'movie';
+            else if (['Uber', 'Transport'].includes(val)) icon = 'directions_car';
+            else if (['Whole Foods', 'Groceries'].includes(val)) icon = 'local_grocery_store';
+            else if (['Delta Airlines', 'Travel'].includes(val)) icon = 'flight';
+            else if (['Bills', 'Utilities'].includes(val)) icon = 'receipt_long';
+            else if (['CVS Pharmacy', 'Health'].includes(val)) icon = 'health_and_safety';
+
+            tag.innerHTML = `<span class="material-symbols-outlined" style="font-size: 12px;">${icon}</span>${val}`;
+
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 80 + Math.random() * 120;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+
+            tag.style.left = '50%';
+            tag.style.top = '50%';
+            tag.style.marginLeft = '-45px';
+            tag.style.marginTop = '-12px';
+            
+            tag.style.setProperty('--tx', tx + 'px');
+            tag.style.setProperty('--ty', ty + 'px');
+            tag.style.setProperty('--dur', (1.2 + Math.random() * 0.8) + 's');
+
+            scannerContainer.appendChild(tag);
+            requestAnimationFrame(() => tag.classList.add('fly'));
+            
+            setTimeout(() => tag.remove(), 2000);
+        }
+
+        // ===== SCANNER STAGE ANIMATION =====
+        function runScannerAnimation() {
+            // Phase 1: Crystallization Phase (Glow and level ledger)
+            scannerContainer.classList.add('crystallize');
+            scannerStatus.innerHTML = '<span>Crystallizing financial ledger...</span>';
 
             setTimeout(() => {
-                // Phase 1b: Intense wobble (1s - 1.5s)
-                piggyContainer.classList.remove('piggy-wobble');
-                piggyContainer.classList.add('piggy-wobble-intense');
-            }, 800);
+                // Phase 2: Exploding burst
+                scannerContainer.classList.remove('crystallize');
+                scannerContainer.classList.add('crystallize-burst');
+
+                // Spawn neon/gold particles bursting from center
+                spawnCrystallizeParticles(scannerContainer, 40);
+
+                // Hide text and bar smoothly
+                scannerStatus.style.opacity = '0';
+                scannerStatus.style.transition = 'opacity 0.3s';
+                document.querySelector('.scanner-progress').style.opacity = '0';
+                document.querySelector('.scanner-progress').style.transition = 'opacity 0.3s';
+            }, 1000);
 
             setTimeout(() => {
-                // Phase 2: Cracks appear (1.5s - 2.2s)
-                piggyContainer.classList.add('piggy-cracking');
-            }, 1200);
+                // Phase 3: Fade overlay out
+                scannerOverlay.classList.add('fade-out');
+            }, 1800);
 
             setTimeout(() => {
-                // Phase 3: EXPLODE! (2.2s)
-                piggyContainer.classList.remove('piggy-wobble-intense');
-                piggyContainer.classList.add('piggy-explode');
-
-                // Spawn coins
-                spawnCoins(piggyContainer, 18);
-                spawnSparkles(piggyContainer, 24);
-
-                // Hide status text
-                piggyStatus.style.opacity = '0';
-                piggyStatus.style.transition = 'opacity 0.3s';
-                document.querySelector('.piggy-progress').style.opacity = '0';
-            }, 2000);
-
-            setTimeout(() => {
-                // Phase 4: Fade overlay (2.8s)
-                piggyOverlay.classList.add('fade-out');
-            }, 2800);
-
-            setTimeout(() => {
-                // Phase 5: Show dashboard (3.5s)
-                piggyOverlay.classList.remove('active');
-                piggyOverlay.classList.remove('fade-out');
-                piggyStatus.style.opacity = '';
-                piggyStatus.style.transition = '';
-                document.querySelector('.piggy-progress').style.opacity = '';
+                // Phase 4: Show dashboard
+                scannerOverlay.classList.remove('active');
+                scannerOverlay.classList.remove('fade-out');
+                scannerStatus.style.opacity = '';
+                scannerStatus.style.transition = '';
+                document.querySelector('.scanner-progress').style.opacity = '';
+                document.querySelector('.scanner-progress').style.transition = '';
 
                 showDashboard();
-            }, 3600);
+            }, 2600);
         }
 
-        function spawnCoins(container, count) {
+        function spawnCrystallizeParticles(container, count) {
             for (let i = 0; i < count; i++) {
-                const coin = document.createElement('div');
-                coin.className = 'coin';
+                const p = document.createElement('div');
+                p.className = 'crystallize-particle';
 
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 100 + Math.random() * 250;
-                const tx = Math.cos(angle) * distance;
-                const ty = Math.sin(angle) * distance - 40;
-                const rot = 360 + Math.random() * 720;
-                const sizes = [14, 17, 20, 23, 16];
-                const size = sizes[i % sizes.length];
-
-                coin.style.width = size + 'px';
-                coin.style.height = size + 'px';
-                coin.style.marginLeft = -(size / 2) + 'px';
-                coin.style.marginTop = -(size / 2) + 'px';
-                coin.style.setProperty('--tx', tx + 'px');
-                coin.style.setProperty('--ty', ty + 'px');
-                coin.style.setProperty('--rot', rot + 'deg');
-                coin.style.setProperty('--dur', (0.6 + Math.random() * 0.4) + 's');
-                coin.style.setProperty('--delay', (Math.random() * 0.15) + 's');
-
-                if (size >= 20) coin.textContent = '$';
-
-                container.appendChild(coin);
-                requestAnimationFrame(() => coin.classList.add('fly'));
-            }
-        }
-
-        function spawnSparkles(container, count) {
-            for (let i = 0; i < count; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-
-                const angle = Math.random() * Math.PI * 2;
-                const distance = 60 + Math.random() * 300;
+                const distance = 80 + Math.random() * 260;
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance;
+                const size = 3 + Math.random() * 6;
+                
+                const colors = ['#f59e0b', '#3b82f6', '#8b5cf6', '#60a5fa', '#fcd34d'];
+                const color = colors[i % colors.length];
 
-                sparkle.style.setProperty('--tx', tx + 'px');
-                sparkle.style.setProperty('--ty', ty + 'px');
-                sparkle.style.setProperty('--dur', (0.5 + Math.random() * 0.6) + 's');
-                sparkle.style.setProperty('--delay', (Math.random() * 0.25) + 's');
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.background = color;
+                p.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+                
+                p.style.left = '50%';
+                p.style.top = '50%';
+                p.style.marginLeft = -(size / 2) + 'px';
+                p.style.marginTop = -(size / 2) + 'px';
+                
+                p.style.setProperty('--tx', tx + 'px');
+                p.style.setProperty('--ty', ty + 'px');
+                p.style.setProperty('--dur', (0.8 + Math.random() * 0.8) + 's');
+                p.style.setProperty('--delay', (Math.random() * 0.1) + 's');
 
-                container.appendChild(sparkle);
-                requestAnimationFrame(() => sparkle.classList.add('fly'));
+                container.appendChild(p);
+                requestAnimationFrame(() => p.classList.add('fly'));
+                
+                setTimeout(() => p.remove(), 1600);
             }
         }
 
@@ -2001,12 +2160,10 @@
                     <div class="legend-item">
                         <div class="legend-left">
                             <div class="legend-dot" style="background:${color}"></div>
-                            <span class="legend-name">${cat}</span>
+                            <span class="legend-name" title="${cat}">${cat}</span>
                         </div>
-                        <div style="display:flex;align-items:center;">
-                            <span class="legend-value">$${amount.toFixed(2)}</span>
-                            <span class="legend-pct">${(pct * 100).toFixed(1)}%</span>
-                        </div>
+                        <span class="legend-value">$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span class="legend-pct">${(pct * 100).toFixed(1)}%</span>
                     </div>`;
             });
 
@@ -2140,9 +2297,11 @@
                 requestAnimationFrame(() => { el.style.animation = ''; });
             });
 
-            // Reset piggy bank state
-            piggyContainer.className = 'piggy-container';
-            piggyContainer.querySelectorAll('.coin, .sparkle').forEach(el => el.remove());
+            // Reset scanner overlay elements
+            scannerContainer.className = 'scanner-container';
+            scannerContainer.querySelectorAll('.data-node').forEach(el => el.classList.remove('connected'));
+            scannerContainer.querySelectorAll('.connection-line').forEach(el => el.classList.remove('active'));
+            scannerContainer.querySelectorAll('.floating-tag, .crystallize-particle').forEach(el => el.remove());
         }
 
         // ===== INIT =====
