@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumina Editorial | Financial Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=Literata:ital,wght@0,400;0,500;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#3f4661",
+                        "on-surface": "#171b28",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#d3c5ad",
+                        "secondary": "#645e50",
+                        "on-secondary-fixed-variant": "#4b4639",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#9b8f79",
+                        "inverse-on-surface": "#eef0ff",
+                        "surface-container-highest": "#dfe2f4",
+                        "inverse-primary": "#bfc5e7",
+                        "outline-variant": "#c6c6ce",
+                        "tertiary-container": "#302818",
+                        "surface-tint": "#565d7a",
+                        "surface-container-high": "#e4e7fa",
+                        "secondary-fixed-dim": "#cec6b5",
+                        "primary-container": "#212842",
+                        "on-tertiary-fixed-variant": "#4f4634",
+                        "surface": "#faf8ff",
+                        "surface-container-low": "#f2f3ff",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#dfe2f4",
+                        "primary": "#0c132c",
+                        "on-secondary-fixed": "#1f1b10",
+                        "primary-fixed": "#dce1ff",
+                        "tertiary-fixed": "#f0e1c8",
+                        "outline": "#76767e",
+                        "on-primary-fixed": "#131a33",
+                        "secondary-fixed": "#eae2d0",
+                        "on-secondary-container": "#6a6456",
+                        "inverse-surface": "#2c303e",
+                        "surface-container": "#eaedff",
+                        "on-tertiary-fixed": "#221b0c",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d6d9ec",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#1b1406",
+                        "secondary-container": "#eae2d0",
+                        "background": "#faf8ff",
+                        "on-error": "#ffffff",
+                        "on-background": "#171b28",
+                        "on-surface-variant": "#46464d",
+                        "surface-bright": "#faf8ff",
+                        "primary-fixed-dim": "#bfc5e7",
+                        "on-primary-container": "#888fae"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "24px",
+                        "stack-unit": "8px",
+                        "margin-desktop": "80px",
+                        "gutter": "32px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-md": ["EB Garamond"],
+                        "headline-lg": ["EB Garamond"],
+                        "headline-sm": ["EB Garamond"],
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "body-lg": ["Literata"],
+                        "body-md": ["Literata"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "30px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #faf8ff;
+            color: #171b28;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .sparkline-svg {
+            stroke: #dce1ff;
+            stroke-width: 2;
+            fill: none;
+        }
+        .custom-pie {
+            background: conic-gradient(#0c132c 0% 65%, #cec6b5 65% 85%, #76767e 85% 100%);
+            border-radius: 50%;
+        }
+        .sidebar-item-active {
+            background-color: #0c132c;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+<!-- Persistent Side Navigation -->
+<aside class="w-64 bg-surface border-r border-outline-variant flex flex-col h-full z-50">
+<div class="p-8">
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">Lumina</h1>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="sidebar-item-active flex items-center gap-4 px-4 py-3 rounded-lg group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md">Overview</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-label-md">Market</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md">Insights</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-md">Portfolio</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-md">Alerts</span>
+</a>
+</nav>
+<div class="px-8 py-6 border-t border-outline-variant space-y-4">
+<div class="flex flex-col">
+<h3 class="font-headline-sm text-sm text-primary mb-1 tracking-tight">Market Overview</h3>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-label-caps text-primary">S&amp;P 500</span>
+<span class="text-[10px] font-label-caps text-primary/60">+0.85%</span>
+</div>
+</div>
+<div class="w-full h-10">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,18 Q15,15 25,12 T45,15 T65,5 T85,10 T100,2" fill="none" stroke="#0c132c" stroke-width="1.5"></path>
+</svg>
+</div>
+</div><div class="p-4 border-t border-outline-variant">
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Top Functional Header -->
+<header class="h-20 bg-surface border-b border-outline-variant flex items-center justify-between px-10 shrink-0">
+<div class="flex items-center gap-8 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-label-md focus:ring-1 focus:ring-primary" placeholder="Search markets, assets, or insights..." type="text"/>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-caps text-label-caps text-primary border-b-2 border-primary py-1" href="#">PORTFOLIO</a>
+<a class="font-label-caps text-label-caps text-outline hover:text-primary transition-colors py-1" href="#">MARKET</a>
+<a class="font-label-caps text-label-caps text-outline hover:text-primary transition-colors py-1" href="#">ALERTS</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<button class="relative text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<div class="flex items-center gap-3 pl-6 border-l border-outline-variant">
+<div class="text-right hidden sm:block">
+<p class="text-label-md font-bold text-primary leading-none">Julian Thorne</p>
+<p class="text-label-caps text-[10px] text-outline uppercase mt-1">Premium Member</p>
+</div>
+<div class="w-10 h-10 bg-primary rounded-full overflow-hidden border border-outline-variant">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk7Ui9C1ntSy4ebmCywbL4m2BVk__zgK00dTQzQ-w7TDy8kxFyzJdnGWIIiYVQe01V007P0WyVJIVbiKnrC2neYzUB1Mg01U7VU7t8u8kL0YrwMWhKAwFj6wyil16F5tm7O3NZ6-kega0v-vDNvDq9WkRuPqK_bZwMA2ye98cwbJ0Sc0O013PYpd9SwH4eNSZUq6_ggu5hji7eFpD2hqFI1gAs2ZwAIb6R5-ntoqh4nC_RjQ9AdnKBSveOsRQYMsuTsLcfrcpduqc"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Scrollable Grid Content -->
+<main class="flex-1 overflow-y-auto p-10 bg-background">
+<div class="max-w-7xl mx-auto space-y-10">
+<!-- Hero & Insights Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Total Net Worth Hero -->
+<div class="lg:col-span-2 space-y-6">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-caps text-label-caps text-outline uppercase block mb-2 tracking-widest">Total Net Worth</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">$1,420,850.00</h2>
+</div>
+<div class="flex items-center gap-2 bg-secondary-container px-3 py-1.5">
+<span class="material-symbols-outlined text-sm text-primary">trending_up</span>
+<span class="font-label-caps text-label-caps text-primary">+4.2%</span>
+</div>
+</div>
+<div class="w-full h-32 flex items-end">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 800 100">
+<path class="sparkline-svg" d="M0,80 Q100,70 200,85 T400,60 T600,75 T800,20"></path>
+</svg>
+</div>
+</div>
+<!-- Portfolio Insights -->
+<div class="space-y-6">
+<h3 class="font-label-caps text-label-caps text-outline tracking-widest uppercase">Insights</h3>
+<div class="space-y-4">
+<div class="border border-primary p-5 space-y-2 bg-surface">
+<span class="font-label-caps text-label-caps text-outline text-[10px]">EQUITY PERFORMANCE</span>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">Technology holdings increased by 12% this quarter, outpacing benchmarks.</p>
+</div>
+<div class="border border-outline-variant p-5 space-y-2 bg-surface-container-low">
+<span class="font-label-caps text-label-caps text-outline text-[10px]">RISK ASSESSMENT</span>
+<p class="font-body-md text-body-md text-on-surface italic leading-relaxed">"Moderate risk profile with a focus on long-term capital preservation."</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Balanced Bottom Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Lumina Advisor -->
+<div class="lg:col-span-4 flex flex-col">
+<div class="border border-primary p-1 h-full">
+<div class="border border-outline-variant bg-white p-8 h-full flex flex-col items-center text-center justify-center">
+<div class="w-32 h-32 mb-6 border border-outline-variant p-2 grayscale shrink-0">
+<img alt="Assistant" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCv6FnwFShMXRTsQU7E9jwH71Fww7dz1ZRtlAWWZsYJvvLKCrqRGOog1e5wE7Njl56fjUmybCBzfYq7OH7EgcEs8NxY1PVFczGr_gTA_r6M_Cb8_bjAbkW6fP6MlSTxVnPVikhDcMyMlY21tnJQgjanGIW-Ph-YK2bTeHWz_wf4htiSbJwztPzxTSGpNxaH-vB5A2N-YM7SNWdv_rX0eALd1gnZOyTIGrJRrDT0toQUvPC7CdvaeKNI1CKyxrEFrBqjBTBccOeb-8w"/>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Lumina Advisor</h4>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs mx-auto mb-6">Analyze market fluctuations or optimize your recurring transfers today.</p>
+<button class="w-full border border-primary py-3 font-label-caps text-label-caps bg-primary text-white hover:opacity-90 active:scale-95 transition-all">
+                                    COMMENCE DIALOGUE
+                                </button>
+</div>
+</div>
+</div>
+<!-- Allocation & Activity -->
+<div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Allocation -->
+<section class="space-y-6 bg-surface p-6 border border-outline-variant">
+<div class="flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-outline tracking-widest uppercase">Allocation</h3>
+<a class="font-label-caps text-[10px] text-primary border-b border-primary" href="#">VIEW REPORT</a>
+</div>
+<div class="flex flex-col items-center gap-8">
+<div class="w-40 h-40 custom-pie flex items-center justify-center relative">
+<div class="w-28 h-28 bg-surface rounded-full flex items-center justify-center">
+<span class="font-headline-sm text-headline-sm text-primary">May</span>
+</div>
+</div>
+<div class="w-full space-y-3">
+<div class="flex justify-between items-center py-2 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 bg-primary"></div>
+<span class="font-label-md text-label-md text-on-surface">Fixed Equities</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">65%</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 bg-secondary-fixed-dim"></div>
+<span class="font-label-md text-label-md text-on-surface">Alt Assets</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">20%</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 bg-outline"></div>
+<span class="font-label-md text-label-md text-on-surface">Liquidity</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">15%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Activity -->
+<section class="space-y-6 bg-surface p-6 border border-outline-variant">
+<h3 class="font-label-caps text-label-caps text-outline tracking-widest uppercase">Activity</h3>
+<div class="space-y-0">
+<div class="py-4 border-b border-outline-variant flex justify-between items-center">
+<div>
+<p class="font-body-md text-body-md text-primary font-medium leading-tight">Vanguard Index</p>
+<p class="font-label-caps text-[10px] text-outline">REINVESTMENT</p>
+</div>
+<p class="font-body-md text-body-md text-primary font-semibold">+$124.50</p>
+</div>
+<div class="py-4 border-b border-outline-variant flex justify-between items-center">
+<div>
+<p class="font-body-md text-body-md text-primary font-medium leading-tight">Contribution</p>
+<p class="font-label-caps text-[10px] text-outline">TRANSFER</p>
+</div>
+<p class="font-body-md text-body-md text-primary font-semibold">+$2,500</p>
+</div>
+<div class="py-4 border-b border-outline-variant flex justify-between items-center">
+<div>
+<p class="font-body-md text-body-md text-primary font-medium leading-tight">Stripe Payout</p>
+<p class="font-label-caps text-[10px] text-outline">BUSINESS</p>
+</div>
+<p class="font-body-md text-body-md text-primary font-semibold">+$8,900</p>
+</div>
+<div class="py-4 flex justify-center">
+<button class="font-label-caps text-[10px] text-outline hover:text-primary transition-colors">VIEW ALL HISTORY</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
