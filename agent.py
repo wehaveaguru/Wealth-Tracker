@@ -1,10 +1,13 @@
 import os
-
+from dotenv import load_dotenv
 from groq import Groq
 
-client = Groq(
-    api_key=os.environ.get("GROQ_API_KEY"),
-)
+load_dotenv()
+
+api_key = os.getenv("GROQ_API_KEY")
+print(api_key)
+
+client = Groq(api_key=api_key)
 
 chat_completion = client.chat.completions.create(
     messages=[
@@ -17,28 +20,3 @@ chat_completion = client.chat.completions.create(
 )
 
 print(chat_completion.choices[0].message.content)
-
-
-from groq import Groq
-
-client = Groq(
-    api_key="YOUR_API_KEY"
-)
-
-while True:
-    user_input = input("\nYou: ")
-
-    if user_input.lower() == "exit":
-        break
-
-    response = client.chat.completions.create(
-        messages=[
-            {
-                "role": "user",
-                "content": user_input,
-            }
-        ],
-        model="llama-3.3-70b-versatile",
-    )
-
-    print("AI:", response.choices[0].message.content)

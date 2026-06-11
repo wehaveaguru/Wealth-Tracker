@@ -1009,6 +1009,323 @@
         @media (max-width: 600px) {
             .indices-row { grid-template-columns: 1fr; }
         }
+
+        /* ── Floating Glassmorphic Chat Bubble Widget ── */
+        .glass-widget-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 99999;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .glass-widget-panel {
+            width: 380px;
+            height: 520px;
+            border-radius: 16px;
+            background: rgba(250, 248, 255, 0.72);
+            backdrop-filter: blur(20px) saturate(190%);
+            -webkit-backdrop-filter: blur(20px) saturate(190%);
+            border: 1px solid rgba(12, 19, 44, 0.12);
+            box-shadow: 0 16px 48px rgba(12, 19, 44, 0.12);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .glass-widget-panel.open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .glass-widget-header {
+            height: 64px;
+            background: #0c132c;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            flex-shrink: 0;
+        }
+        .glass-widget-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .glass-widget-avatar {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .glass-widget-header-title {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        .glass-widget-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 2px;
+        }
+        .glass-widget-status-dot {
+            width: 6px;
+            height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+        }
+        .glass-widget-status-text {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+        .glass-widget-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .glass-widget-action-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .glass-widget-action-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .glass-widget-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .glass-widget-msg-row {
+            display: flex;
+            gap: 12px;
+        }
+        .glass-widget-msg-row.user {
+            justify-content: flex-end;
+        }
+        .glass-widget-msg-avatar {
+            width: 24px;
+            height: 24px;
+            background: #0c132c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #ffffff;
+        }
+        .glass-widget-msg-avatar span {
+            font-size: 12px;
+        }
+        .glass-widget-bubble {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .glass-widget-bubble.ai {
+            background: rgba(234, 237, 255, 0.55);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(12, 19, 44, 0.06);
+            border-top-left-radius: 0;
+            color: #171b28;
+        }
+        .glass-widget-bubble.user {
+            background: #0c132c;
+            color: #ffffff;
+            border-top-right-radius: 0;
+        }
+        .glass-widget-suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+            padding-top: 8px;
+        }
+        .glass-widget-suggestions-title {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #76767e;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .glass-widget-chip {
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(12, 19, 44, 0.12);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 12px;
+            text-align: left;
+            color: #0c132c;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+            font-family: inherit;
+        }
+        .glass-widget-chip:hover {
+            background: #0c132c;
+            color: #ffffff;
+            border-color: #0c132c;
+            transform: translateY(-1px);
+        }
+        .glass-widget-input-area {
+            border-top: 1px solid rgba(12, 19, 44, 0.08);
+            background: rgba(255, 255, 255, 0.4);
+            padding: 12px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            flex-shrink: 0;
+        }
+        .glass-widget-input-wrapper {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(12, 19, 44, 0.15);
+            border-radius: 12px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .glass-widget-textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 13px;
+            color: #171b28;
+            font-family: inherit;
+            padding: 0;
+            max-height: 80px;
+            line-height: 1.4;
+        }
+        .glass-widget-textarea::placeholder {
+            color: #76767e;
+        }
+        .glass-widget-send-btn {
+            width: 28px;
+            height: 28px;
+            background: #0c132c;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .glass-widget-send-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .glass-widget-launcher {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(12, 19, 44, 0.9);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(12, 19, 44, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            outline: none;
+        }
+        .glass-widget-launcher:hover {
+            transform: scale(1.08);
+            background: rgba(12, 19, 44, 1);
+            box-shadow: 0 12px 36px rgba(12, 19, 44, 0.35);
+        }
+        .glass-widget-launcher:active {
+            transform: scale(0.92);
+        }
+        .glass-widget-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .glass-widget-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .glass-widget-scroll::-webkit-scrollbar-thumb {
+            background: rgba(198, 198, 206, 0.7);
+            border-radius: 4px;
+        }
+        .glass-widget-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(118, 118, 126, 0.7);
+        }
+        .glass-widget-pulse::before {
+            content: '';
+            position: absolute;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid rgba(12, 19, 44, 0.5);
+            animation: pulse-ring-animation 2.2s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+            left: 0;
+            top: 0;
+        }
+        @keyframes pulse-ring-animation {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { opacity: 0.5; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+        .glass-widget-hidden {
+            display: none !important;
+        }
+        .glass-widget-bounce-dots {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .glass-widget-dot {
+            width: 5px;
+            height: 5px;
+            background: rgba(12, 19, 44, 0.5);
+            border-radius: 50%;
+            animation: bounce-dot 1.2s infinite ease-in-out;
+        }
+        .glass-widget-dot:nth-child(2) { animation-delay: 0.2s; }
+        .glass-widget-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce-dot {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
     </style>
 </head>
 <body>
@@ -1019,7 +1336,7 @@
                 <h1>Lumina</h1>
             </div>
             <nav class="sidebar-nav">
-                <a class="sidebar-link" href="code.html">
+                <a class="sidebar-link" href="page.html">
                     <span class="material-symbols-outlined">dashboard</span>
                     Overview
                 </a>
@@ -1034,6 +1351,10 @@
                 <a class="sidebar-link" href="#">
                     <span class="material-symbols-outlined">account_balance_wallet</span>
                     Portfolio
+                </a>
+                <a class="sidebar-link" href="chat.html">
+                    <span class="material-symbols-outlined">chat</span>
+                    Advisor
                 </a>
                 <a class="sidebar-link" href="#">
                     <span class="material-symbols-outlined">notifications</span>
@@ -1507,24 +1828,360 @@
             });
         });
 
-        // ===== INITIALIZE =====
-        function init() {
-            updateClock();
-            setInterval(updateClock, 1000);
 
-            renderTicker();
-            renderIndices();
-            renderStockTable('gainers');
-            renderHeatmap();
-            renderNews();
-            renderMovers();
-            renderWatchlist();
+<!-- Floating Chat Widget -->
+<div id="floating-chat-widget" class="glass-widget-hidden">
+    <div class="glass-widget-container">
+        <!-- Mini Chat Panel -->
+        <div id="mini-chat-panel" class="glass-widget-panel">
+            <!-- Panel Header -->
+            <div class="glass-widget-header">
+                <div class="glass-widget-header-left">
+                    <div class="glass-widget-avatar">
+                        <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                    </div>
+                    <div>
+                        <div class="glass-widget-header-title">Lumina Advisor</div>
+                        <div class="glass-widget-status">
+                            <span class="glass-widget-status-dot"></span>
+                            <span class="glass-widget-status-text">Online</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-widget-header-actions">
+                    <a href="chat.html" class="glass-widget-action-btn" title="Open Full Advisor">
+                        <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+                    </a>
+                    <button id="close-mini-chat" class="glass-widget-action-btn">
+                        <span class="material-symbols-outlined text-[18px]">close</span>
+                    </button>
+                </div>
+            </div>
 
-            // Update indices every 5s for live feel
-            setInterval(simulatePriceUpdates, 5000);
+            <!-- Panel Messages Body -->
+            <div id="mini-chat-messages" class="glass-widget-body glass-widget-scroll">
+                <!-- Welcome message from AI -->
+                <div class="glass-widget-msg-row">
+                    <div class="glass-widget-msg-avatar">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                    </div>
+                    <div class="glass-widget-bubble ai">
+                        Hello! I am your Lumina AI Advisor. How can I assist you with your financial goals today?
+                    </div>
+                </div>
+
+                <!-- Quick Suggestions -->
+                <div id="mini-suggestions" class="glass-widget-suggestions">
+                    <div class="glass-widget-suggestions-title">SUGGESTIONS</div>
+                    <button class="glass-widget-chip" onclick="sendMiniSuggestion('Analyze my portfolio risk exposure')">
+                        Analyze portfolio risk exposure
+                    </button>
+                    <button class="glass-widget-chip" onclick="sendMiniSuggestion('What are today\'s market highlights?')">
+                        What are today's market highlights?
+                    </button>
+                    <button class="glass-widget-chip" onclick="sendMiniSuggestion('Suggest a rebalancing strategy')">
+                        Suggest a rebalancing strategy
+                    </button>
+                </div>
+            </div>
+
+            <!-- Panel Input Area -->
+            <div class="glass-widget-input-area">
+                <div class="glass-widget-input-wrapper">
+                    <textarea id="mini-message-input" rows="1" class="glass-widget-textarea" placeholder="Ask Lumina..."></textarea>
+                    <button id="send-mini-btn" class="glass-widget-send-btn" disabled>
+                        <span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Bubble Launcher Button -->
+        <button id="floating-chat-bubble" class="glass-widget-launcher glass-widget-pulse">
+            <span class="material-symbols-outlined text-[24px]">chat</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    // ── Floating Chat Bubble Widget Logic ──
+    const aiResponses = {
+        "analyze my portfolio risk exposure": `Based on your current portfolio composition, here's your risk analysis:
+
+**Overall Risk Score: 6.2 / 10** (Moderate)
+
+Your allocation of **65% Fixed Equities** provides a solid foundation, though concentration in tech-heavy indices increases sector-specific risk.
+
+| Asset Class | Weight | Risk Contribution |
+|---|---|---|
+| Fixed Equities | 65% | Moderate |
+| Alternative Assets | 20% | Higher |
+| Liquidity | 15% | Low |
+
+**Recommendations:**
+- Consider diversifying into international equities to reduce home-bias risk
+- Maintaining 15% liquidity provides excellent downside protection
+
+Would you like me to simulate different allocation scenarios?`,
+
+        "what are today's market highlights?": `Here are today's key market movements:
+
+**U.S. Markets — Bullish Momentum**
+The S&P 500 is up **+0.85%**, continuing its upward trajectory. The technology sector leads gains with NASDAQ up **+1.2%**.
+
+**Notable Movers:**
+- **NVDA** — Up 3.4% on strong AI infrastructure demand
+- **AAPL** — Up 1.8% ahead of upcoming product announcements
+
+**Global Highlights:**
+- European markets closed mixed; DAX +0.3%
+- Gold trading at $2,342/oz, up 0.5%
+
+Shall I provide a deeper analysis of any sector?`,
+
+        "suggest a rebalancing strategy": `Based on your current allocation and market conditions, I recommend a **Tactical Rebalancing** approach:
+
+**Current vs. Recommended Allocation:**
+
+| Asset Class | Current | Recommended | Action |
+|---|---|---|---|
+| U.S. Equities | 55% | 48% | Trim |
+| Int'l Equities | 10% | 17% | Add |
+| Alt Assets | 20% | 18% | Slight trim |
+| Fixed Income | 0% | 7% | New position |
+| Liquidity | 15% | 10% | Reduce |
+
+Would you like me to generate specific trade orders for this rebalancing?`
+    };
+
+    const genericResponses = [
+        `That's an excellent question. Let me provide some context based on current market data and your portfolio.
+        
+Based on your portfolio valued at **$1,420,850**, your position is well-suited for both growth and stability strategies. Would you like me to run a detailed analysis on any specific aspect?`,
+        `I've analyzed your query against current market conditions and your financial profile.
+        
+Your portfolio's current structure shows resilience. With the S&P 500 trending upward at **+0.85%**, and your tech allocation performing well, you're in a strong position.`,
+        `Given your net worth of **$1.42M** and moderate risk profile, the answer depends on your time horizon and liquidity needs.
+        
+Historical analysis suggests that disciplined, systematic approaches outperform reactive strategies by approximately **2-3% annually** over a 10-year period.`
+    ];
+
+    const widget = document.getElementById('floating-chat-widget');
+    const bubbleBtn = document.getElementById('floating-chat-bubble');
+    const miniPanel = document.getElementById('mini-chat-panel');
+    const closeBtn = document.getElementById('close-mini-chat');
+    const miniMessages = document.getElementById('mini-chat-messages');
+    const miniInput = document.getElementById('mini-message-input');
+    const sendMiniBtn = document.getElementById('send-mini-btn');
+    const miniSuggestions = document.getElementById('mini-suggestions');
+
+    let miniIsGenerating = false;
+
+    // Check if widget should be shown
+    function initChatWidget() {
+        const enabled = localStorage.getItem('lumina_chat_bubble_enabled') !== 'false';
+        if (enabled) {
+            widget.classList.remove('glass-widget-hidden');
+        } else {
+            widget.classList.add('glass-widget-hidden');
+            closeMiniChatPanel();
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+    function toggleMiniChatPanel() {
+        const isOpen = miniPanel.classList.contains('open');
+        if (isOpen) {
+            closeMiniChatPanel();
+        } else {
+            openMiniChatPanel();
+        }
+    }
+
+    function openMiniChatPanel() {
+        miniPanel.classList.add('open');
+        setTimeout(() => miniInput.focus(), 100);
+    }
+
+    function closeMiniChatPanel() {
+        miniPanel.classList.remove('open');
+    }
+
+    // Scroll to bottom helper
+    function scrollMiniToBottom() {
+        requestAnimationFrame(() => {
+            miniMessages.scrollTo({
+                top: miniMessages.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // Markdown-like formatting helper (lightweight)
+    function formatMiniMarkdown(text) {
+        // Tables
+        text = text.replace(/\n\|(.+)\|\n\|[-|]+\|\n((?:\|.+\|\n?)+)/g, (match, header, rows) => {
+            const headers = header.split('|').map(h => h.trim()).filter(Boolean);
+            const rowLines = rows.trim().split('\n');
+            let table = '<table style="width: 100%; margin: 8px 0; font-size: 11px; border-collapse: collapse;"><thead><tr>';
+            headers.forEach(h => { table += `<th style="text-align: left; padding: 6px; border-bottom: 1px solid var(--outline-variant); color: var(--outline); font-weight: 600;">${h}</th>`; });
+            table += '</tr></thead><tbody>';
+            rowLines.forEach(r => {
+                const cols = r.split('|').map(c => c.trim()).filter(Boolean);
+                table += '<tr>';
+                cols.forEach(c => { table += `<td style="padding: 4px 6px; border-bottom: 1px solid rgba(198, 198, 206, 0.3);">${c}</td>`; });
+                table += '</tr>';
+            });
+            table += '</tbody></table>';
+            return table;
+        });
+
+        // Bold
+        text = text.replace(/\*\*(.+?)\*\*/g, '<strong style="font-weight: 600; color: var(--primary);">$1</strong>');
+        // Bullet points
+        text = text.replace(/^-\s+(.+)/gm, '<div style="display: flex; gap: 8px; margin: 2px 0;"><span style="color: var(--primary);">•</span><span>$1</span></div>');
+        // Line breaks
+        text = text.replace(/\n\n/g, '<div style="height: 8px;"></div>');
+        text = text.replace(/\n/g, '<br/>');
+        return text;
+    }
+
+    function addMiniUserMessage(text) {
+        if (miniSuggestions) {
+            miniSuggestions.style.display = 'none';
+        }
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'glass-widget-msg-row user';
+        msgDiv.innerHTML = `
+            <div class="glass-widget-bubble user">
+                ${text}
+            </div>
+        `;
+        miniMessages.appendChild(msgDiv);
+        scrollMiniToBottom();
+    }
+
+    function addMiniAIMessage(text) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'glass-widget-msg-row';
+        msgDiv.innerHTML = `
+            <div class="glass-widget-msg-avatar">
+                <span class="material-symbols-outlined">auto_awesome</span>
+            </div>
+            <div class="glass-widget-bubble ai">
+                ${formatMiniMarkdown(text)}
+            </div>
+        `;
+        miniMessages.appendChild(msgDiv);
+        scrollMiniToBottom();
+    }
+
+    function showMiniTypingIndicator() {
+        const indicator = document.createElement('div');
+        indicator.id = 'mini-typing-indicator';
+        indicator.className = 'glass-widget-msg-row';
+        indicator.innerHTML = `
+            <div class="glass-widget-msg-avatar">
+                <span class="material-symbols-outlined">auto_awesome</span>
+            </div>
+            <div class="glass-widget-bubble ai">
+                <div class="glass-widget-bounce-dots">
+                    <div class="glass-widget-dot"></div>
+                    <div class="glass-widget-dot"></div>
+                    <div class="glass-widget-dot"></div>
+                </div>
+            </div>
+        `;
+        miniMessages.appendChild(indicator);
+        scrollMiniToBottom();
+    }
+
+    // Export so Suggestions buttons can access it
+    window.sendMiniSuggestion = function(text) {
+        sendMiniMessage(text);
+    };
+
+    function removeMiniTypingIndicator() {
+        const indicator = document.getElementById('mini-typing-indicator');
+        if (indicator) indicator.remove();
+    }
+
+    async function sendMiniMessage(text) {
+        if (!text.trim() || miniIsGenerating) return;
+        miniIsGenerating = true;
+        sendMiniBtn.disabled = true;
+
+        addMiniUserMessage(text);
+        miniInput.value = '';
+        miniInput.style.height = 'auto';
+
+        showMiniTypingIndicator();
+
+        const thinkTime = 1000 + Math.random() * 1000;
+        await new Promise(resolve => setTimeout(resolve, thinkTime));
+
+        removeMiniTypingIndicator();
+
+        const normalized = text.toLowerCase().trim();
+        const response = aiResponses[normalized] || genericResponses[Math.floor(Math.random() * genericResponses.length)];
+        addMiniAIMessage(response);
+
+        miniIsGenerating = false;
+        updateMiniSendButton();
+    }
+
+    function updateMiniSendButton() {
+        sendMiniBtn.disabled = miniInput.value.trim().length === 0 || miniIsGenerating;
+    }
+
+    // Event Listeners
+    bubbleBtn.addEventListener('click', toggleMiniChatPanel);
+    closeBtn.addEventListener('click', closeMiniChatPanel);
+    
+    miniInput.addEventListener('input', () => {
+        miniInput.style.height = 'auto';
+        miniInput.style.height = Math.min(miniInput.scrollHeight, 100) + 'px';
+        updateMiniSendButton();
+    });
+
+    miniInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMiniMessage(miniInput.value);
+        }
+    });
+
+    sendMiniBtn.addEventListener('click', () => {
+        sendMiniMessage(miniInput.value);
+    });
+
+    // Listen to localStorage changes across tabs to instantly show/hide widget
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'lumina_chat_bubble_enabled') {
+            initChatWidget();
+        }
+    });
+
+    // ===== INITIALIZE =====
+    function init() {
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        renderTicker();
+        renderIndices();
+        renderStockTable('gainers');
+        renderHeatmap();
+        renderNews();
+        renderMovers();
+        renderWatchlist();
+
+        // Update indices every 5s for live feel
+        setInterval(simulatePriceUpdates, 5000);
+
+        // Init chat widget
+        initChatWidget();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
