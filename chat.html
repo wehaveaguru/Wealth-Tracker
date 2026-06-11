@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Lumina Editorial | AI Advisor Chat</title>
+    <meta name="description" content="Chat with Lumina AI Advisor for financial insights, portfolio analysis, and market intelligence."/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Literata:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#3f4661",
+                        "on-surface": "#171b28",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#d3c5ad",
+                        "secondary": "#645e50",
+                        "on-secondary-fixed-variant": "#4b4639",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#9b8f79",
+                        "inverse-on-surface": "#eef0ff",
+                        "surface-container-highest": "#dfe2f4",
+                        "inverse-primary": "#bfc5e7",
+                        "outline-variant": "#c6c6ce",
+                        "tertiary-container": "#302818",
+                        "surface-tint": "#565d7a",
+                        "surface-container-high": "#e4e7fa",
+                        "secondary-fixed-dim": "#cec6b5",
+                        "primary-container": "#212842",
+                        "on-tertiary-fixed-variant": "#4f4634",
+                        "surface": "#faf8ff",
+                        "surface-container-low": "#f2f3ff",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#dfe2f4",
+                        "primary": "#0c132c",
+                        "on-secondary-fixed": "#1f1b10",
+                        "primary-fixed": "#dce1ff",
+                        "tertiary-fixed": "#f0e1c8",
+                        "outline": "#76767e",
+                        "on-primary-fixed": "#131a33",
+                        "secondary-fixed": "#eae2d0",
+                        "on-secondary-container": "#6a6456",
+                        "inverse-surface": "#2c303e",
+                        "surface-container": "#eaedff",
+                        "on-tertiary-fixed": "#221b0c",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d6d9ec",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#1b1406",
+                        "secondary-container": "#eae2d0",
+                        "background": "#faf8ff",
+                        "on-error": "#ffffff",
+                        "on-background": "#171b28",
+                        "on-surface-variant": "#46464d",
+                        "surface-bright": "#faf8ff",
+                        "primary-fixed-dim": "#bfc5e7",
+                        "on-primary-container": "#888fae"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "24px",
+                        "stack-unit": "8px",
+                        "margin-desktop": "80px",
+                        "gutter": "32px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-md": ["EB Garamond"],
+                        "headline-lg": ["EB Garamond"],
+                        "headline-sm": ["EB Garamond"],
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "body-lg": ["Literata"],
+                        "body-md": ["Literata"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "30px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #faf8ff;
+            color: #171b28;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-item-active {
+            background-color: #0c132c;
+            color: #ffffff;
+        }
+
+        /* Chat-specific styles */
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes dotPulse {
+            0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+            40% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .message-enter {
+            animation: messageSlideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .typing-dot {
+            animation: dotPulse 1.4s ease-in-out infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        .chat-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: #c6c6ce;
+            border-radius: 4px;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb:hover {
+            background: #76767e;
+        }
+
+        .suggestion-chip {
+            transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .suggestion-chip:hover {
+            background-color: #0c132c;
+            color: #ffffff;
+            border-color: #0c132c;
+            transform: translateY(-1px);
+        }
+
+        .send-btn {
+            transition: all 0.2s ease;
+        }
+        .send-btn:not(:disabled):hover {
+            background-color: #212842;
+            transform: scale(1.05);
+        }
+        .send-btn:not(:disabled):active {
+            transform: scale(0.95);
+        }
+        .send-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .input-glow:focus-within {
+            box-shadow: 0 0 0 2px #dce1ff;
+        }
+
+        .ai-avatar-ring {
+            background: linear-gradient(135deg, #0c132c 0%, #565d7a 50%, #bfc5e7 100%);
+            padding: 2px;
+        }
+
+        .message-bubble-ai {
+            position: relative;
+        }
+        .message-bubble-ai::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #0c132c, #bfc5e7, transparent);
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+<!-- Persistent Side Navigation -->
+<aside class="w-64 bg-surface border-r border-outline-variant flex flex-col h-full z-50 shrink-0">
+    <div class="p-8">
+        <h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">Lumina</h1>
+    </div>
+    <nav class="flex-1 px-4 space-y-1">
+        <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="page.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-label-md">Overview</span>
+        </a>
+        <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="marker.html">
+            <span class="material-symbols-outlined">trending_up</span>
+            <span class="font-label-md">Market</span>
+        </a>
+        <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="insights.html">
+            <span class="material-symbols-outlined">menu_book</span>
+            <span class="font-label-md">Insights</span>
+        </a>
+        <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="#">
+            <span class="material-symbols-outlined">account_balance_wallet</span>
+            <span class="font-label-md">Portfolio</span>
+        </a>
+        <a class="sidebar-item-active flex items-center gap-4 px-4 py-3 rounded-lg group" href="chat.html">
+            <span class="material-symbols-outlined">chat</span>
+            <span class="font-label-md">Advisor</span>
+        </a>
+    </nav>
+    <!-- Conversation History -->
+    <div class="px-4 py-4 border-t border-outline-variant">
+        <h3 class="font-label-caps text-label-caps text-outline tracking-widest uppercase px-4 mb-3">RECENT CHATS</h3>
+        <div class="space-y-1">
+            <button id="history-1" class="w-full text-left flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group">
+                <span class="material-symbols-outlined text-[18px] opacity-60">forum</span>
+                <span class="font-label-md text-[13px] truncate">Portfolio Rebalancing</span>
+            </button>
+            <button id="history-2" class="w-full text-left flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group">
+                <span class="material-symbols-outlined text-[18px] opacity-60">forum</span>
+                <span class="font-label-md text-[13px] truncate">Tax Optimization</span>
+            </button>
+            <button id="history-3" class="w-full text-left flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group">
+                <span class="material-symbols-outlined text-[18px] opacity-60">forum</span>
+                <span class="font-label-md text-[13px] truncate">Market Analysis Q2</span>
+            </button>
+        </div>
+    </div>
+    <div class="p-4 border-t border-outline-variant">
+        <a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors" href="#">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="font-label-md">Settings</span>
+        </a>
+    </div>
+</aside>
+
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <!-- Top Header -->
+    <header class="h-20 bg-surface border-b border-outline-variant flex items-center justify-between px-10 shrink-0">
+        <div class="flex items-center gap-4">
+            <div class="ai-avatar-ring rounded-full">
+                <div class="w-9 h-9 bg-primary rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-[20px]">auto_awesome</span>
+                </div>
+            </div>
+            <div>
+                <h2 class="font-headline-sm text-[18px] text-primary leading-tight tracking-tight">Lumina Advisor</h2>
+                <div class="flex items-center gap-2">
+                    <span id="status-dot" class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                    <span id="status-text" class="font-label-caps text-[10px] text-outline uppercase">Online — Ready to assist</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button id="new-chat-btn" class="flex items-center gap-2 px-4 py-2 border border-outline-variant hover:border-primary hover:bg-surface-container-low rounded-lg transition-all group" title="Start new conversation">
+                <span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors">add</span>
+                <span class="font-label-caps text-label-caps text-outline group-hover:text-primary transition-colors hidden sm:inline">NEW CHAT</span>
+            </button>
+            <div class="flex items-center gap-3 px-3 py-1.5 bg-surface-container-low border border-outline-variant rounded-lg">
+                <span class="font-label-caps text-[10px] text-outline uppercase tracking-wider">Floating Bubble</span>
+                <button id="bubble-toggle-btn" class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-primary" role="switch" aria-checked="true">
+                    <span id="bubble-toggle-thumb" class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-4"></span>
+                </button>
+            </div>
+            <div class="flex items-center gap-3 pl-4 border-l border-outline-variant">
+                <div class="text-right hidden sm:block">
+                    <p class="text-label-md font-bold text-primary leading-none">Julian Thorne</p>
+                    <p class="text-label-caps text-[10px] text-outline uppercase mt-1">Premium Member</p>
+                </div>
+                <div class="w-10 h-10 bg-primary rounded-full overflow-hidden border border-outline-variant">
+                    <img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk7Ui9C1ntSy4ebmCywbL4m2BVk__zgK00dTQzQ-w7TDy8kxFyzJdnGWIIiYVQe01V007P0WyVJIVbiKnrC2neYzUB1Mg01U7VU7t8u8kL0YrwMWhKAwFj6wyil16F5tm7O3NZ6-kega0v-vDNvDq9WkRuPqK_bZwMA2ye98cwbJ0Sc0O013PYpd9SwH4eNSZUq6_ggu5hji7eFpD2hqFI1gAs2ZwAIb6R5-ntoqh4nC_RjQ9AdnKBSveOsRQYMsuTsLcfrcpduqc"/>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Chat Area -->
+    <main class="flex-1 flex flex-col overflow-hidden bg-background">
+        <!-- Messages Container -->
+        <div id="chat-messages" class="flex-1 overflow-y-auto chat-scroll px-6 md:px-10 py-8">
+            <div class="max-w-3xl mx-auto space-y-6" id="messages-container">
+
+                <!-- Welcome State -->
+                <div id="welcome-state" class="flex flex-col items-center justify-center min-h-[60vh] text-center">
+                    <div class="ai-avatar-ring rounded-full mb-6">
+                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white text-[32px]">auto_awesome</span>
+                        </div>
+                    </div>
+                    <h2 class="font-headline-md text-headline-md text-primary mb-3">Lumina Advisor</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant max-w-md mb-10">
+                        Your intelligent financial companion. Ask about market trends, portfolio optimization, or any financial insight.
+                    </p>
+
+                    <!-- Suggestion Chips -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
+                        <button class="suggestion-chip border border-outline-variant px-5 py-4 text-left bg-surface hover:shadow-md" onclick="useSuggestion(this)">
+                            <span class="font-label-caps text-[10px] text-outline tracking-widest block mb-1">ANALYSIS</span>
+                            <span class="font-body-md text-[14px] text-primary">Analyze my portfolio risk exposure</span>
+                        </button>
+                        <button class="suggestion-chip border border-outline-variant px-5 py-4 text-left bg-surface hover:shadow-md" onclick="useSuggestion(this)">
+                            <span class="font-label-caps text-[10px] text-outline tracking-widest block mb-1">MARKET</span>
+                            <span class="font-body-md text-[14px] text-primary">What are today's market highlights?</span>
+                        </button>
+                        <button class="suggestion-chip border border-outline-variant px-5 py-4 text-left bg-surface hover:shadow-md" onclick="useSuggestion(this)">
+                            <span class="font-label-caps text-[10px] text-outline tracking-widest block mb-1">STRATEGY</span>
+                            <span class="font-body-md text-[14px] text-primary">Suggest a rebalancing strategy</span>
+                        </button>
+                        <button class="suggestion-chip border border-outline-variant px-5 py-4 text-left bg-surface hover:shadow-md" onclick="useSuggestion(this)">
+                            <span class="font-label-caps text-[10px] text-outline tracking-widest block mb-1">INSIGHT</span>
+                            <span class="font-body-md text-[14px] text-primary">Explain dividend reinvestment</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="border-t border-outline-variant bg-surface px-6 md:px-10 py-5 shrink-0">
+            <div class="max-w-3xl mx-auto">
+                <div class="input-glow flex items-end gap-3 border border-outline-variant bg-surface-container-lowest rounded-xl px-4 py-3 transition-all">
+                    <button id="attach-btn" class="shrink-0 text-outline hover:text-primary transition-colors pb-0.5" title="Attach file">
+                        <span class="material-symbols-outlined text-[22px]">attach_file</span>
+                    </button>
+                    <textarea
+                        id="message-input"
+                        class="flex-1 bg-transparent border-none outline-none resize-none font-body-md text-[15px] text-on-surface placeholder:text-outline min-h-[24px] max-h-[120px] leading-relaxed p-0 focus:ring-0"
+                        placeholder="Ask Lumina anything..."
+                        rows="1"
+                    ></textarea>
+                    <button id="send-btn" class="send-btn shrink-0 w-9 h-9 bg-primary rounded-lg flex items-center justify-center" disabled title="Send message">
+                        <span class="material-symbols-outlined text-white text-[20px]">arrow_upward</span>
+                    </button>
+                </div>
+                <p class="font-label-caps text-[10px] text-outline text-center mt-3 tracking-wider">
+                    LUMINA MAY PRODUCE INACCURATE INFORMATION — VERIFY BEFORE ACTING ON FINANCIAL ADVICE
+                </p>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // ── State ──
+    const messagesContainer = document.getElementById('messages-container');
+    const chatMessages = document.getElementById('chat-messages');
+    const messageInput = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
+    const welcomeState = document.getElementById('welcome-state');
+    const statusText = document.getElementById('status-text');
+    const statusDot = document.getElementById('status-dot');
+    const newChatBtn = document.getElementById('new-chat-btn');
+
+    let isGenerating = false;
+
+    // ── AI Response Library ──
+    const aiResponses = {
+        "analyze my portfolio risk exposure": `Based on your current portfolio composition, here's your risk analysis:
+
+**Overall Risk Score: 6.2 / 10** (Moderate)
+
+Your allocation of **65% Fixed Equities** provides a solid foundation, though concentration in tech-heavy indices increases sector-specific risk.
+
+| Asset Class | Weight | Risk Contribution |
+|---|---|---|
+| Fixed Equities | 65% | Moderate |
+| Alternative Assets | 20% | Higher |
+| Liquidity | 15% | Low |
+
+**Recommendations:**
+- Consider diversifying into international equities to reduce home-bias risk
+- Your alternative asset allocation is well-positioned for inflation hedging
+- Maintaining 15% liquidity provides excellent downside protection
+
+Would you like me to simulate different allocation scenarios?`,
+
+        "what are today's market highlights?": `Here are today's key market movements:
+
+**U.S. Markets — Bullish Momentum**
+The S&P 500 is up **+0.85%**, continuing its upward trajectory. The technology sector leads gains with NASDAQ up **+1.2%**.
+
+**Notable Movers:**
+- **NVDA** — Up 3.4% on strong AI infrastructure demand
+- **AAPL** — Up 1.8% ahead of upcoming product announcements
+- **Treasury 10Y** — Yield at 4.32%, down 5bps
+
+**Global Highlights:**
+- European markets closed mixed; DAX +0.3%, FTSE -0.2%
+- Asian markets showed strength overnight; Nikkei +1.1%
+- Gold trading at $2,342/oz, up 0.5%
+
+**Impact on Your Portfolio:**
+Your tech-heavy allocation is benefiting from today's momentum. Your estimated daily gain is approximately **+$4,200**.
+
+Shall I provide a deeper analysis of any sector?`,
+
+        "suggest a rebalancing strategy": `Based on your current allocation and market conditions, I recommend a **Tactical Rebalancing** approach:
+
+**Current vs. Recommended Allocation:**
+
+| Asset Class | Current | Recommended | Action |
+|---|---|---|---|
+| U.S. Equities | 55% | 48% | Trim |
+| Int'l Equities | 10% | 17% | Add |
+| Alt Assets | 20% | 18% | Slight trim |
+| Fixed Income | 0% | 7% | New position |
+| Liquidity | 15% | 10% | Reduce |
+
+**Key Moves:**
+1. **Reduce** U.S. equity concentration by 7% — the market is at elevated valuations
+2. **Increase** international exposure to capture emerging market growth
+3. **Introduce** a 7% fixed income position for income stability
+4. **Deploy** 5% of excess liquidity into productive assets
+
+**Estimated Impact:**
+- Portfolio volatility reduction: ~12%
+- Expected yield improvement: +0.4% annually
+- Sharpe ratio improvement: 0.72 → 0.89
+
+Would you like me to generate specific trade orders for this rebalancing?`,
+
+        "explain dividend reinvestment": `**Dividend Reinvestment (DRIP)** is a powerful compounding strategy that automatically uses your dividend payouts to purchase additional shares.
+
+**How It Works:**
+When a company pays you a $100 dividend, instead of receiving cash, your broker automatically buys more shares of that same stock — often at no commission.
+
+**The Power of Compounding:**
+
+Consider a $10,000 investment with a 3% dividend yield:
+
+| Year | Without DRIP | With DRIP |
+|---|---|---|
+| 5 | $11,500 | $12,890 |
+| 10 | $13,000 | $16,288 |
+| 20 | $16,000 | $26,533 |
+| 30 | $19,000 | $43,219 |
+
+**In Your Portfolio:**
+You currently have **$124.50** in pending reinvestment from your Vanguard Index fund. With DRIP enabled, this would automatically purchase approximately **2.8 additional shares** at current prices.
+
+**My Recommendation:**
+Enable DRIP for all holdings with consistent dividend histories. Your portfolio could see an additional **$28,400** in value over 10 years through reinvestment alone.
+
+Want me to identify which of your holdings would benefit most from DRIP?`
+    };
+
+    // Generic fallback responses
+    const genericResponses = [
+        `That's an excellent question. Let me provide some context based on current market data and your portfolio.
+
+**Key Considerations:**
+Based on your portfolio valued at **$1,420,850**, your position is well-suited for both growth and stability strategies. The current market environment favors a balanced approach.
+
+I'd recommend reviewing this in the context of your long-term financial goals. Would you like me to run a detailed analysis on any specific aspect?`,
+
+        `I've analyzed your query against current market conditions and your financial profile.
+
+**Summary:**
+Your portfolio's current structure shows resilience. With the S&P 500 trending upward at **+0.85%**, and your tech allocation performing well, you're in a strong position.
+
+**Next Steps I'd Suggest:**
+1. Review your current exposure against your target allocation
+2. Consider the tax implications of any rebalancing
+3. Monitor upcoming economic indicators that could impact your holdings
+
+Shall I elaborate on any of these points?`,
+
+        `Great question — this is something many investors at your level consider.
+
+**From a strategic perspective:**
+Given your net worth of **$1.42M** and moderate risk profile, the answer depends on your time horizon and liquidity needs.
+
+**What the Data Shows:**
+Historical analysis suggests that disciplined, systematic approaches outperform reactive strategies by approximately **2-3% annually** over a 10-year period.
+
+I can create a customized analysis if you'd like to share more details about your specific situation.`
+    ];
+
+    // ── Utilities ──
+    function getTimestamp() {
+        return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function scrollToBottom() {
+        requestAnimationFrame(() => {
+            chatMessages.scrollTo({
+                top: chatMessages.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    function autoResizeTextarea() {
+        messageInput.style.height = 'auto';
+        messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
+    }
+
+    // ── Message Rendering ──
+    function addUserMessage(text) {
+        if (welcomeState) {
+            welcomeState.style.display = 'none';
+        }
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'flex justify-end message-enter';
+        wrapper.innerHTML = `
+            <div class="max-w-[75%] flex flex-col items-end gap-1.5">
+                <div class="bg-primary text-white px-5 py-3.5 rounded-2xl rounded-br-sm">
+                    <p class="font-body-md text-[15px] leading-relaxed">${escapeHtml(text)}</p>
+                </div>
+                <span class="font-label-caps text-[10px] text-outline px-1">${getTimestamp()}</span>
+            </div>
+        `;
+
+        messagesContainer.appendChild(wrapper);
+        scrollToBottom();
+    }
+
+    function addAIMessage(text) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'flex gap-4 message-enter';
+        wrapper.innerHTML = `
+            <div class="shrink-0 mt-1">
+                <div class="ai-avatar-ring rounded-full">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-[16px]">auto_awesome</span>
+                    </div>
+                </div>
+            </div>
+            <div class="max-w-[85%] flex flex-col gap-1.5">
+                <div class="message-bubble-ai bg-surface-container-low border border-outline-variant px-5 py-4 rounded-2xl rounded-tl-sm">
+                    <div class="font-body-md text-[15px] text-on-surface leading-relaxed ai-content">${formatMarkdown(text)}</div>
+                </div>
+                <div class="flex items-center gap-3 px-1">
+                    <span class="font-label-caps text-[10px] text-outline">${getTimestamp()}</span>
+                    <div class="flex items-center gap-1">
+                        <button class="text-outline hover:text-primary transition-colors p-1 rounded" title="Copy response" onclick="copyMessage(this)">
+                            <span class="material-symbols-outlined text-[16px]">content_copy</span>
+                        </button>
+                        <button class="text-outline hover:text-primary transition-colors p-1 rounded" title="Good response">
+                            <span class="material-symbols-outlined text-[16px]">thumb_up</span>
+                        </button>
+                        <button class="text-outline hover:text-primary transition-colors p-1 rounded" title="Bad response">
+                            <span class="material-symbols-outlined text-[16px]">thumb_down</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        messagesContainer.appendChild(wrapper);
+        scrollToBottom();
+    }
+
+    function showTypingIndicator() {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'flex gap-4 message-enter';
+        wrapper.id = 'typing-indicator';
+        wrapper.innerHTML = `
+            <div class="shrink-0 mt-1">
+                <div class="ai-avatar-ring rounded-full">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-[16px]">auto_awesome</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-surface-container-low border border-outline-variant px-5 py-4 rounded-2xl rounded-tl-sm">
+                <div class="flex items-center gap-1.5">
+                    <div class="w-2 h-2 bg-primary/50 rounded-full typing-dot"></div>
+                    <div class="w-2 h-2 bg-primary/50 rounded-full typing-dot"></div>
+                    <div class="w-2 h-2 bg-primary/50 rounded-full typing-dot"></div>
+                </div>
+            </div>
+        `;
+        messagesContainer.appendChild(wrapper);
+        scrollToBottom();
+    }
+
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+    }
+
+    // ── Markdown-like Formatting ──
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function formatMarkdown(text) {
+        // Tables
+        text = text.replace(/\n\|(.+)\|\n\|[-|]+\|\n((?:\|.+\|\n?)+)/g, (match, header, rows) => {
+            const headers = header.split('|').map(h => h.trim()).filter(Boolean);
+            const rowLines = rows.trim().split('\n');
+            let table = '<table class="w-full my-3 text-[13px] font-label-md"><thead><tr>';
+            headers.forEach(h => { table += `<th class="text-left py-2 px-3 border-b border-outline-variant text-outline font-semibold">${h}</th>`; });
+            table += '</tr></thead><tbody>';
+            rowLines.forEach(r => {
+                const cols = r.split('|').map(c => c.trim()).filter(Boolean);
+                table += '<tr>';
+                cols.forEach(c => { table += `<td class="py-2 px-3 border-b border-outline-variant/50">${c}</td>`; });
+                table += '</tr>';
+            });
+            table += '</tbody></table>';
+            return table;
+        });
+
+        // Bold
+        text = text.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-primary">$1</strong>');
+
+        // Italic
+        text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+        // Numbered lists
+        text = text.replace(/^(\d+)\.\s+(.+)/gm, '<div class="flex gap-2 my-1"><span class="text-outline font-semibold shrink-0">$1.</span><span>$2</span></div>');
+
+        // Bullet points
+        text = text.replace(/^-\s+(.+)/gm, '<div class="flex gap-2 my-1"><span class="text-primary">•</span><span>$1</span></div>');
+
+        // Line breaks
+        text = text.replace(/\n\n/g, '<div class="h-3"></div>');
+        text = text.replace(/\n/g, '<br/>');
+
+        return text;
+    }
+
+    // ── Actions ──
+    function getAIResponse(userText) {
+        const normalized = userText.toLowerCase().trim();
+        if (aiResponses[normalized]) {
+            return aiResponses[normalized];
+        }
+        return genericResponses[Math.floor(Math.random() * genericResponses.length)];
+    }
+
+    async function sendMessage() {
+        const text = messageInput.value.trim();
+        if (!text || isGenerating) return;
+
+        isGenerating = true;
+        sendBtn.disabled = true;
+
+        // Add user message
+        addUserMessage(text);
+
+        // Clear input
+        messageInput.value = '';
+        autoResizeTextarea();
+
+        // Update status
+        statusText.textContent = 'Thinking...';
+        statusDot.className = 'w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse';
+
+        // Show typing indicator
+        showTypingIndicator();
+
+        // Simulate AI thinking time
+        const thinkTime = 1200 + Math.random() * 1800;
+        await new Promise(resolve => setTimeout(resolve, thinkTime));
+
+        // Remove typing indicator & add AI response
+        removeTypingIndicator();
+        const response = getAIResponse(text);
+        addAIMessage(response);
+
+        // Reset status
+        statusText.textContent = 'Online — Ready to assist';
+        statusDot.className = 'w-1.5 h-1.5 bg-green-500 rounded-full';
+        isGenerating = false;
+        updateSendButton();
+    }
+
+    function useSuggestion(btn) {
+        const text = btn.querySelector('.text-primary').textContent;
+        messageInput.value = text;
+        autoResizeTextarea();
+        sendMessage();
+    }
+
+    function copyMessage(btn) {
+        const content = btn.closest('.flex.items-center').parentElement.querySelector('.ai-content');
+        if (content) {
+            navigator.clipboard.writeText(content.innerText).then(() => {
+                const icon = btn.querySelector('.material-symbols-outlined');
+                icon.textContent = 'check';
+                setTimeout(() => { icon.textContent = 'content_copy'; }, 1500);
+            });
+        }
+    }
+
+    function startNewChat() {
+        // Clear messages
+        messagesContainer.innerHTML = '';
+
+        // Rebuild welcome state
+        const welcome = document.createElement('div');
+        welcome.id = 'welcome-state';
+        welcome.className = 'flex flex-col items-center justify-center min-h-[60vh] text-center';
+        welcome.innerHTML = `
+            <div class="ai-avatar-ring rounded-full mb-6">
+                <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white text-[32px]">auto_awesome</span>
+                </div>
+            </div>
+            <h2 class="font-headline-md text-headline-md text-primary mb-3">Lumina Advisor</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-md mb-10">
+                Your intelligent financial companion. Ask about market trends, portfolio optimization, or any financial insight.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
+                <button class="suggestion-chip border border-outline-variant px-5 py-4 text-left bg-surface hover:shadow-md" onclick="useSuggestion(this)">
+                    <span class="font-label-caps text-[10px] text-outline tracking-widest block mb-1">ANALYSIS</span>
+                    <span class="font-body-md text-[14px] text-primary">Analyze my portfolio risk exposure</span>
+                </button>
+                <button class="suggestion-chip border border-outline-variant px-5 py-4 text-left bg-surface hover:shadow-md" onclick="useSuggestion(this)">
+                    <span class="font-label-caps text-[10px] text-outline tracking-widest block mb-1">MARKET</span>
+                    <span class="font-body-md text-[14px] text-primary">What are today's market highlights?</span>
+                </button>
+                <button class="suggestion-chip border border-outline-variant px-5 py-4 text-left bg-surface hover:shadow-md" onclick="useSuggestion(this)">
+                    <span class="font-label-caps text-[10px] text-outline tracking-widest block mb-1">STRATEGY</span>
+                    <span class="font-body-md text-[14px] text-primary">Suggest a rebalancing strategy</span>
+                </button>
+                <button class="suggestion-chip border border-outline-variant px-5 py-4 text-left bg-surface hover:shadow-md" onclick="useSuggestion(this)">
+                    <span class="font-label-caps text-[10px] text-outline tracking-widest block mb-1">INSIGHT</span>
+                    <span class="font-body-md text-[14px] text-primary">Explain dividend reinvestment</span>
+                </button>
+            </div>
+        `;
+        messagesContainer.appendChild(welcome);
+    }
+
+    function updateSendButton() {
+        sendBtn.disabled = messageInput.value.trim().length === 0 || isGenerating;
+    }
+
+    // ── Event Listeners ──
+    messageInput.addEventListener('input', () => {
+        autoResizeTextarea();
+        updateSendButton();
+    });
+
+    messageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    sendBtn.addEventListener('click', sendMessage);
+    newChatBtn.addEventListener('click', startNewChat);
+
+    // ── Floating Chat Bubble Toggle Logic ──
+    const bubbleToggleBtn = document.getElementById('bubble-toggle-btn');
+    const bubbleToggleThumb = document.getElementById('bubble-toggle-thumb');
+
+    let bubbleEnabled = localStorage.getItem('lumina_chat_bubble_enabled') !== 'false';
+
+    function updateToggleUI() {
+        if (bubbleEnabled) {
+            bubbleToggleBtn.classList.remove('bg-outline');
+            bubbleToggleBtn.classList.add('bg-primary');
+            bubbleToggleThumb.classList.remove('translate-x-0');
+            bubbleToggleThumb.classList.add('translate-x-4');
+        } else {
+            bubbleToggleBtn.classList.remove('bg-primary');
+            bubbleToggleBtn.classList.add('bg-outline');
+            bubbleToggleThumb.classList.remove('translate-x-4');
+            bubbleToggleThumb.classList.add('translate-x-0');
+        }
+    }
+
+    // Initialize toggle state
+    updateToggleUI();
+
+    bubbleToggleBtn.addEventListener('click', () => {
+        bubbleEnabled = !bubbleEnabled;
+        localStorage.setItem('lumina_chat_bubble_enabled', bubbleEnabled);
+        updateToggleUI();
+    });
+
+    // Focus input on page load
+    messageInput.focus();
+</script>
+</body>
+</html>
