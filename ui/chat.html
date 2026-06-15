@@ -379,128 +379,6 @@
 
     let isGenerating = false;
 
-    // ── AI Response Library ──
-    const aiResponses = {
-        "analyze my portfolio risk exposure": `Based on your current portfolio composition, here's your risk analysis:
-
-**Overall Risk Score: 6.2 / 10** (Moderate)
-
-Your allocation of **65% Fixed Equities** provides a solid foundation, though concentration in tech-heavy indices increases sector-specific risk.
-
-| Asset Class | Weight | Risk Contribution |
-|---|---|---|
-| Fixed Equities | 65% | Moderate |
-| Alternative Assets | 20% | Higher |
-| Liquidity | 15% | Low |
-
-**Recommendations:**
-- Consider diversifying into international equities to reduce home-bias risk
-- Your alternative asset allocation is well-positioned for inflation hedging
-- Maintaining 15% liquidity provides excellent downside protection
-
-Would you like me to simulate different allocation scenarios?`,
-
-        "what are today's market highlights?": `Here are today's key market movements:
-
-**U.S. Markets — Bullish Momentum**
-The S&P 500 is up **+0.85%**, continuing its upward trajectory. The technology sector leads gains with NASDAQ up **+1.2%**.
-
-**Notable Movers:**
-- **NVDA** — Up 3.4% on strong AI infrastructure demand
-- **AAPL** — Up 1.8% ahead of upcoming product announcements
-- **Treasury 10Y** — Yield at 4.32%, down 5bps
-
-**Global Highlights:**
-- European markets closed mixed; DAX +0.3%, FTSE -0.2%
-- Asian markets showed strength overnight; Nikkei +1.1%
-- Gold trading at $2,342/oz, up 0.5%
-
-**Impact on Your Portfolio:**
-Your tech-heavy allocation is benefiting from today's momentum. Your estimated daily gain is approximately **+$4,200**.
-
-Shall I provide a deeper analysis of any sector?`,
-
-        "suggest a rebalancing strategy": `Based on your current allocation and market conditions, I recommend a **Tactical Rebalancing** approach:
-
-**Current vs. Recommended Allocation:**
-
-| Asset Class | Current | Recommended | Action |
-|---|---|---|---|
-| U.S. Equities | 55% | 48% | Trim |
-| Int'l Equities | 10% | 17% | Add |
-| Alt Assets | 20% | 18% | Slight trim |
-| Fixed Income | 0% | 7% | New position |
-| Liquidity | 15% | 10% | Reduce |
-
-**Key Moves:**
-1. **Reduce** U.S. equity concentration by 7% — the market is at elevated valuations
-2. **Increase** international exposure to capture emerging market growth
-3. **Introduce** a 7% fixed income position for income stability
-4. **Deploy** 5% of excess liquidity into productive assets
-
-**Estimated Impact:**
-- Portfolio volatility reduction: ~12%
-- Expected yield improvement: +0.4% annually
-- Sharpe ratio improvement: 0.72 → 0.89
-
-Would you like me to generate specific trade orders for this rebalancing?`,
-
-        "explain dividend reinvestment": `**Dividend Reinvestment (DRIP)** is a powerful compounding strategy that automatically uses your dividend payouts to purchase additional shares.
-
-**How It Works:**
-When a company pays you a $100 dividend, instead of receiving cash, your broker automatically buys more shares of that same stock — often at no commission.
-
-**The Power of Compounding:**
-
-Consider a $10,000 investment with a 3% dividend yield:
-
-| Year | Without DRIP | With DRIP |
-|---|---|---|
-| 5 | $11,500 | $12,890 |
-| 10 | $13,000 | $16,288 |
-| 20 | $16,000 | $26,533 |
-| 30 | $19,000 | $43,219 |
-
-**In Your Portfolio:**
-You currently have **$124.50** in pending reinvestment from your Vanguard Index fund. With DRIP enabled, this would automatically purchase approximately **2.8 additional shares** at current prices.
-
-**My Recommendation:**
-Enable DRIP for all holdings with consistent dividend histories. Your portfolio could see an additional **$28,400** in value over 10 years through reinvestment alone.
-
-Want me to identify which of your holdings would benefit most from DRIP?`
-    };
-
-    // Generic fallback responses
-    const genericResponses = [
-        `That's an excellent question. Let me provide some context based on current market data and your portfolio.
-
-**Key Considerations:**
-Based on your portfolio valued at **$1,420,850**, your position is well-suited for both growth and stability strategies. The current market environment favors a balanced approach.
-
-I'd recommend reviewing this in the context of your long-term financial goals. Would you like me to run a detailed analysis on any specific aspect?`,
-
-        `I've analyzed your query against current market conditions and your financial profile.
-
-**Summary:**
-Your portfolio's current structure shows resilience. With the S&P 500 trending upward at **+0.85%**, and your tech allocation performing well, you're in a strong position.
-
-**Next Steps I'd Suggest:**
-1. Review your current exposure against your target allocation
-2. Consider the tax implications of any rebalancing
-3. Monitor upcoming economic indicators that could impact your holdings
-
-Shall I elaborate on any of these points?`,
-
-        `Great question — this is something many investors at your level consider.
-
-**From a strategic perspective:**
-Given your net worth of **$1.42M** and moderate risk profile, the answer depends on your time horizon and liquidity needs.
-
-**What the Data Shows:**
-Historical analysis suggests that disciplined, systematic approaches outperform reactive strategies by approximately **2-3% annually** over a 10-year period.
-
-I can create a customized analysis if you'd like to share more details about your specific situation.`
-    ];
 
     // ── Utilities ──
     function getTimestamp() {
@@ -652,16 +530,23 @@ I can create a customized analysis if you'd like to share more details about you
     }
 
     // ── Actions ──
-    function getAIResponse(userText) {
-        const normalized = userText.toLowerCase().trim();
-        if (aiResponses[normalized]) {
-            return aiResponses[normalized];
-        }
-        return genericResponses[Math.floor(Math.random() * genericResponses.length)];
+     async function getAIResponse(userText) {
+        const query = userText.trim()
+        console.log(query)
+
+       const res = await fetch("/advisor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ "response": query })
+    });
+     const data= await res.json()
+
+    return data.response
     }
 
     async function sendMessage() {
-        const text = messageInput.value.trim();
+        const text = messageInput.value;
+        console.log(text)
         if (!text || isGenerating) return;
 
         isGenerating = true;
@@ -687,7 +572,7 @@ I can create a customized analysis if you'd like to share more details about you
 
         // Remove typing indicator & add AI response
         removeTypingIndicator();
-        const response = getAIResponse(text);
+        const response =  await getAIResponse(text);
         addAIMessage(response);
 
         // Reset status

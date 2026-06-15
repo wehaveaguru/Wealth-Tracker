@@ -5,18 +5,21 @@ from groq import Groq
 load_dotenv()
 
 api_key = os.getenv("GROQ_API_KEY")
-print(api_key)
+
+
 
 client = Groq(api_key=api_key)
 
-chat_completion = client.chat.completions.create(
-    messages=[
-        {
-            "role": "user",
-            "content": "Explain the importance of fast language models",
-        }
-    ],
-    model="llama-3.3-70b-versatile",
-)
 
-print(chat_completion.choices[0].message.content)
+def get_response(query):
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": query,
+            }
+        ],
+        model="llama-3.3-70b-versatile",
+    )
+
+    return chat_completion.choices[0].message.content

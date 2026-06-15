@@ -7,7 +7,7 @@ import sys
 
 # Add ui/ directory to path so we can import routes.py
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "ui"))
-from routes import app
+from ui.routes import app
 
 # Mount the UI folder to serve static HTML files
 ui_dir = os.path.join(os.path.dirname(__file__), "ui")

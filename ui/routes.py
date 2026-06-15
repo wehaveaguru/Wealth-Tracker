@@ -1,8 +1,15 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import pydantic
 import csv
 import io
 import json
+from agent import get_response
+
+
+class ChatResponse(pydantic.BaseModel):
+    response: str
+
 
 app = FastAPI(title="Lumina Insights API")
 
@@ -259,6 +266,16 @@ async def analyze_statement(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="No transactions could be extracted from the file.")
 
     return transactions
+
+
+@app.post("/advisor")
+async def chat_response(body: ChatResponse):
+    response_text = get_response(body.response)
+    print(response_text)
+
+    return {"response" : response_text}
+
+
 
 
 @app.get("/health")
