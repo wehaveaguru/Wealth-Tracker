@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Lumina Editorial | Spending Insights</title>
-    <meta name="description" content="Upload your bank statement and get AI-powered spending insights with beautiful visualizations."/>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <meta name="description"
+        content="Upload your bank statement and get AI-powered spending insights with beautiful visualizations." />
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
     <style>
         /* ===== DESIGN TOKENS ===== */
         :root {
@@ -43,7 +48,13 @@
         }
 
         /* ===== RESET & BASE ===== */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Inter', system-ui, sans-serif;
@@ -58,13 +69,29 @@
             font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--outline-variant); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--outline); }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--outline-variant);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--outline);
+        }
 
         /* ===== LAYOUT ===== */
-        .app-shell { display: flex; height: 100vh; overflow: hidden; }
+        .app-shell {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
 
         .sidebar {
             width: 260px;
@@ -75,7 +102,9 @@
             flex-shrink: 0;
         }
 
-        .sidebar-brand { padding: 28px 32px; }
+        .sidebar-brand {
+            padding: 28px 32px;
+        }
 
         .sidebar-brand h1 {
             font-family: 'EB Garamond', serif;
@@ -85,7 +114,10 @@
             letter-spacing: -0.02em;
         }
 
-        .sidebar-nav { flex: 1; padding: 0 16px; }
+        .sidebar-nav {
+            flex: 1;
+            padding: 0 16px;
+        }
 
         .sidebar-link {
             display: flex;
@@ -111,7 +143,9 @@
             color: var(--on-primary);
         }
 
-        .sidebar-link .material-symbols-outlined { font-size: 22px; }
+        .sidebar-link .material-symbols-outlined {
+            font-size: 22px;
+        }
 
         .sidebar-footer {
             padding: 16px;
@@ -273,7 +307,9 @@
             letter-spacing: -0.01em;
         }
 
-        .hidden { display: none !important; }
+        .hidden {
+            display: none !important;
+        }
 
         /* ===== UPLOAD ZONE ===== */
         .upload-hero {
@@ -369,8 +405,15 @@
         }
 
         @keyframes pulse-text {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
+
+            0%,
+            100% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         .upload-icon {
@@ -393,8 +436,15 @@
         }
 
         @keyframes float-icon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
         }
 
         .upload-zone-title {
@@ -513,13 +563,28 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            50% { transform: translateX(8px); }
-            75% { transform: translateX(-4px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-8px);
+            }
+
+            50% {
+                transform: translateX(8px);
+            }
+
+            75% {
+                transform: translateX(-4px);
+            }
         }
 
-        #file-input { display: none; }
+        #file-input {
+            display: none;
+        }
 
         /* ===== DATA SCANNER OVERLAY ===== */
         .scanner-overlay {
@@ -573,20 +638,27 @@
             transform: rotateX(25deg) rotateY(-15deg) rotateZ(5deg);
             transform-style: preserve-3d;
             box-shadow: -20px 20px 40px rgba(0, 0, 0, 0.5),
-                        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
             padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 16px;
             animation: card-float 4s ease-in-out infinite;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-                        opacity 0.5s ease, 
-                        box-shadow 0.8s ease;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.5s ease,
+                box-shadow 0.8s ease;
         }
 
         @keyframes card-float {
-            0%, 100% { transform: rotateX(25deg) rotateY(-15deg) rotateZ(5deg) translateY(0); }
-            50% { transform: rotateX(23deg) rotateY(-13deg) rotateZ(6deg) translateY(-8px); }
+
+            0%,
+            100% {
+                transform: rotateX(25deg) rotateY(-15deg) rotateZ(5deg) translateY(0);
+            }
+
+            50% {
+                transform: rotateX(23deg) rotateY(-13deg) rotateZ(6deg) translateY(-8px);
+            }
         }
 
         /* Ledger card skeleton items */
@@ -635,12 +707,14 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
             animation: skeleton-glow 2s infinite linear;
         }
 
         @keyframes skeleton-glow {
-            to { left: 100%; }
+            to {
+                left: 100%;
+            }
         }
 
         .ledger-line-mid {
@@ -655,7 +729,7 @@
             position: absolute;
             inset: 0;
             background-image: linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+                linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
             background-size: 15px 15px;
             opacity: 0.5;
             pointer-events: none;
@@ -675,8 +749,15 @@
         }
 
         @keyframes laser-sweep {
-            0%, 100% { top: 0%; }
-            50% { top: 100%; }
+
+            0%,
+            100% {
+                top: 0%;
+            }
+
+            50% {
+                top: 100%;
+            }
         }
 
         /* Data Nodes Overlay */
@@ -704,8 +785,17 @@
         }
 
         @keyframes pulse-node {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.3); opacity: 1; }
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+
+            50% {
+                transform: scale(1.3);
+                opacity: 1;
+            }
         }
 
         .connection-line {
@@ -746,10 +836,23 @@
         }
 
         @keyframes tag-rise {
-            0% { transform: translate(0, 0) scale(0.8); opacity: 0; }
-            10% { opacity: 1; }
-            85% { opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0.9); opacity: 0; }
+            0% {
+                transform: translate(0, 0) scale(0.8);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            85% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0.9);
+                opacity: 0;
+            }
         }
 
         /* Crystallize & shockwave states */
@@ -799,8 +902,17 @@
         }
 
         @keyframes blast-expand {
-            0% { transform: scale(0.1); opacity: 1; border-width: 8px; }
-            100% { transform: scale(6); opacity: 0; border-width: 1px; }
+            0% {
+                transform: scale(0.1);
+                opacity: 1;
+                border-width: 8px;
+            }
+
+            100% {
+                transform: scale(6);
+                opacity: 0;
+                border-width: 1px;
+            }
         }
 
         .crystallize-flash {
@@ -817,9 +929,17 @@
         }
 
         @keyframes flash-pulse {
-            0% { opacity: 0; }
-            40% { opacity: 1; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 0;
+            }
+
+            40% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
 
         .crystallize-burst .ledger-card {
@@ -833,7 +953,7 @@
 
         .crystallize-particle {
             position: absolute;
-            background: radial-gradient(circle, #f59e0b 0%, rgba(251,191,36,0.3) 70%, transparent 100%);
+            background: radial-gradient(circle, #f59e0b 0%, rgba(251, 191, 36, 0.3) 70%, transparent 100%);
             border-radius: 50%;
             pointer-events: none;
             opacity: 0;
@@ -845,8 +965,15 @@
         }
 
         @keyframes particle-explode {
-            0% { transform: translate(0, 0) scale(1.2); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0.1); opacity: 0; }
+            0% {
+                transform: translate(0, 0) scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0.1);
+                opacity: 0;
+            }
         }
 
         /* Status & progress stylings under dark mode */
@@ -858,7 +985,7 @@
             margin-top: 36px;
             text-align: center;
             letter-spacing: 0.01em;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             min-height: 32px;
         }
 
@@ -869,7 +996,7 @@
             border-radius: 2px;
             margin-top: 20px;
             overflow: hidden;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .scanner-progress-bar {
@@ -964,14 +1091,41 @@
             margin-top: 4px;
         }
 
-        .sc-total .summary-card-icon { background: #ede9fe; color: #7c3aed; }
-        .sc-total::before { background: #7c3aed; }
-        .sc-count .summary-card-icon { background: #dbeafe; color: #2563eb; }
-        .sc-count::before { background: #2563eb; }
-        .sc-top .summary-card-icon { background: #fef3c7; color: #d97706; }
-        .sc-top::before { background: #d97706; }
-        .sc-avg .summary-card-icon { background: #d1fae5; color: #059669; }
-        .sc-avg::before { background: #059669; }
+        .sc-total .summary-card-icon {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .sc-total::before {
+            background: #7c3aed;
+        }
+
+        .sc-count .summary-card-icon {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .sc-count::before {
+            background: #2563eb;
+        }
+
+        .sc-top .summary-card-icon {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .sc-top::before {
+            background: #d97706;
+        }
+
+        .sc-avg .summary-card-icon {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .sc-avg::before {
+            background: #059669;
+        }
 
         /* Charts grid */
         .charts-grid {
@@ -1063,7 +1217,9 @@
             font-size: 13px;
         }
 
-        .legend-item:last-child { border-bottom: none; }
+        .legend-item:last-child {
+            border-bottom: none;
+        }
 
         .legend-left {
             display: flex;
@@ -1104,7 +1260,11 @@
         }
 
         /* Bar chart */
-        .bar-chart { display: flex; flex-direction: column; gap: 12px; }
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
         .bar-row {
             display: flex;
@@ -1148,8 +1308,13 @@
         }
 
         @keyframes bar-grow {
-            from { transform: scaleX(0); }
-            to { transform: scaleX(1); }
+            from {
+                transform: scaleX(0);
+            }
+
+            to {
+                transform: scaleX(1);
+            }
         }
 
         .bar-amount {
@@ -1297,12 +1462,29 @@
             font-variation-settings: 'FILL' 1, 'wght' 400;
         }
 
-        .type-warning .insight-card-icon { background: #fef3c7; color: #d97706; }
-        .type-info .insight-card-icon { background: #dbeafe; color: #2563eb; }
-        .type-tip .insight-card-icon { background: #d1fae5; color: #059669; }
-        .type-positive .insight-card-icon { background: #ede9fe; color: #7c3aed; }
+        .type-warning .insight-card-icon {
+            background: #fef3c7;
+            color: #d97706;
+        }
 
-        .insight-card-content { flex: 1; }
+        .type-info .insight-card-icon {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .type-tip .insight-card-icon {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .type-positive .insight-card-icon {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .insight-card-content {
+            flex: 1;
+        }
 
         .insight-card-title {
             font-family: 'EB Garamond', serif;
@@ -1320,8 +1502,15 @@
 
         /* ===== ANIMATIONS ===== */
         @keyframes fade-in-up {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .animate-in {
@@ -1329,16 +1518,45 @@
             opacity: 0;
         }
 
-        .animate-delay-1 { animation-delay: 0.05s; }
-        .animate-delay-2 { animation-delay: 0.1s; }
-        .animate-delay-3 { animation-delay: 0.15s; }
-        .animate-delay-4 { animation-delay: 0.2s; }
-        .animate-delay-5 { animation-delay: 0.25s; }
-        .animate-delay-6 { animation-delay: 0.3s; }
-        .animate-delay-7 { animation-delay: 0.35s; }
-        .animate-delay-8 { animation-delay: 0.4s; }
-        .animate-delay-9 { animation-delay: 0.5s; }
-        .animate-delay-10 { animation-delay: 0.6s; }
+        .animate-delay-1 {
+            animation-delay: 0.05s;
+        }
+
+        .animate-delay-2 {
+            animation-delay: 0.1s;
+        }
+
+        .animate-delay-3 {
+            animation-delay: 0.15s;
+        }
+
+        .animate-delay-4 {
+            animation-delay: 0.2s;
+        }
+
+        .animate-delay-5 {
+            animation-delay: 0.25s;
+        }
+
+        .animate-delay-6 {
+            animation-delay: 0.3s;
+        }
+
+        .animate-delay-7 {
+            animation-delay: 0.35s;
+        }
+
+        .animate-delay-8 {
+            animation-delay: 0.4s;
+        }
+
+        .animate-delay-9 {
+            animation-delay: 0.5s;
+        }
+
+        .animate-delay-10 {
+            animation-delay: 0.6s;
+        }
 
         /* New upload button */
         .new-upload-btn {
@@ -1363,27 +1581,59 @@
             color: var(--on-primary);
         }
 
-        .new-upload-btn .material-symbols-outlined { font-size: 16px; }
+        .new-upload-btn .material-symbols-outlined {
+            font-size: 16px;
+        }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1200px) {
-            .charts-grid { grid-template-columns: 1fr; }
-            .summary-row { grid-template-columns: repeat(2, 1fr); }
-            .insights-grid { grid-template-columns: 1fr; }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 900px) {
-            .sidebar { display: none; }
-            .scroll-area { padding: 20px; }
-            .top-bar { padding: 0 20px; }
-            .summary-row { grid-template-columns: 1fr 1fr; }
-            .doughnut-wrapper { flex-direction: column; }
+            .sidebar {
+                display: none;
+            }
+
+            .scroll-area {
+                padding: 20px;
+            }
+
+            .top-bar {
+                padding: 0 20px;
+            }
+
+            .summary-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .doughnut-wrapper {
+                flex-direction: column;
+            }
         }
 
         @media (max-width: 600px) {
-            .summary-row { grid-template-columns: 1fr; }
-            .category-grid { grid-template-columns: 1fr; }
-            .upload-hero-title { font-size: 32px; }
+            .summary-row {
+                grid-template-columns: 1fr;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .upload-hero-title {
+                font-size: 32px;
+            }
         }
 
         /* ── Floating Glassmorphic Chat Bubble Widget ── */
@@ -1397,6 +1647,7 @@
             flex-direction: column;
             align-items: flex-end;
         }
+
         .glass-widget-panel {
             width: 380px;
             height: 520px;
@@ -1415,11 +1666,13 @@
             pointer-events: none;
             transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+
         .glass-widget-panel.open {
             opacity: 1;
             transform: translateY(0);
             pointer-events: auto;
         }
+
         .glass-widget-header {
             height: 64px;
             background: #0c132c;
@@ -1430,11 +1683,13 @@
             padding: 0 16px;
             flex-shrink: 0;
         }
+
         .glass-widget-header-left {
             display: flex;
             align-items: center;
             gap: 12px;
         }
+
         .glass-widget-avatar {
             width: 32px;
             height: 32px;
@@ -1445,23 +1700,27 @@
             align-items: center;
             justify-content: center;
         }
+
         .glass-widget-header-title {
             font-size: 14px;
             font-weight: 600;
             line-height: 1.2;
         }
+
         .glass-widget-status {
             display: flex;
             align-items: center;
             gap: 6px;
             margin-top: 2px;
         }
+
         .glass-widget-status-dot {
             width: 6px;
             height: 6px;
             background: #22c55e;
             border-radius: 50%;
         }
+
         .glass-widget-status-text {
             font-size: 9px;
             text-transform: uppercase;
@@ -1469,11 +1728,13 @@
             color: rgba(255, 255, 255, 0.7);
             font-weight: 600;
         }
+
         .glass-widget-header-actions {
             display: flex;
             align-items: center;
             gap: 8px;
         }
+
         .glass-widget-action-btn {
             background: none;
             border: none;
@@ -1487,10 +1748,12 @@
             transition: all 0.2s;
             text-decoration: none;
         }
+
         .glass-widget-action-btn:hover {
             color: #ffffff;
             background: rgba(255, 255, 255, 0.1);
         }
+
         .glass-widget-body {
             flex: 1;
             overflow-y: auto;
@@ -1499,13 +1762,16 @@
             flex-direction: column;
             gap: 16px;
         }
+
         .glass-widget-msg-row {
             display: flex;
             gap: 12px;
         }
+
         .glass-widget-msg-row.user {
             justify-content: flex-end;
         }
+
         .glass-widget-msg-avatar {
             width: 24px;
             height: 24px;
@@ -1517,9 +1783,11 @@
             flex-shrink: 0;
             color: #ffffff;
         }
+
         .glass-widget-msg-avatar span {
             font-size: 12px;
         }
+
         .glass-widget-bubble {
             max-width: 80%;
             padding: 10px 14px;
@@ -1528,6 +1796,7 @@
             line-height: 1.5;
             box-sizing: border-box;
         }
+
         .glass-widget-bubble.ai {
             background: rgba(234, 237, 255, 0.55);
             backdrop-filter: blur(4px);
@@ -1536,11 +1805,13 @@
             border-top-left-radius: 0;
             color: #171b28;
         }
+
         .glass-widget-bubble.user {
             background: #0c132c;
             color: #ffffff;
             border-top-right-radius: 0;
         }
+
         .glass-widget-suggestions {
             display: flex;
             flex-direction: column;
@@ -1548,6 +1819,7 @@
             margin-top: 8px;
             padding-top: 8px;
         }
+
         .glass-widget-suggestions-title {
             font-size: 9px;
             text-transform: uppercase;
@@ -1556,6 +1828,7 @@
             font-weight: 600;
             margin-bottom: 4px;
         }
+
         .glass-widget-chip {
             background: rgba(255, 255, 255, 0.65);
             border: 1px solid rgba(12, 19, 44, 0.12);
@@ -1570,12 +1843,14 @@
             transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
             font-family: inherit;
         }
+
         .glass-widget-chip:hover {
             background: #0c132c;
             color: #ffffff;
             border-color: #0c132c;
             transform: translateY(-1px);
         }
+
         .glass-widget-input-area {
             border-top: 1px solid rgba(12, 19, 44, 0.08);
             background: rgba(255, 255, 255, 0.4);
@@ -1584,6 +1859,7 @@
             -webkit-backdrop-filter: blur(10px);
             flex-shrink: 0;
         }
+
         .glass-widget-input-wrapper {
             background: rgba(255, 255, 255, 0.8);
             border: 1px solid rgba(12, 19, 44, 0.15);
@@ -1593,6 +1869,7 @@
             align-items: center;
             gap: 8px;
         }
+
         .glass-widget-textarea {
             flex: 1;
             background: transparent;
@@ -1606,9 +1883,11 @@
             max-height: 80px;
             line-height: 1.4;
         }
+
         .glass-widget-textarea::placeholder {
             color: #76767e;
         }
+
         .glass-widget-send-btn {
             width: 28px;
             height: 28px;
@@ -1623,10 +1902,12 @@
             transition: all 0.2s;
             flex-shrink: 0;
         }
+
         .glass-widget-send-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
         }
+
         .glass-widget-launcher {
             width: 56px;
             height: 56px;
@@ -1643,27 +1924,34 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             outline: none;
         }
+
         .glass-widget-launcher:hover {
             transform: scale(1.08);
             background: rgba(12, 19, 44, 1);
             box-shadow: 0 12px 36px rgba(12, 19, 44, 0.35);
         }
+
         .glass-widget-launcher:active {
             transform: scale(0.92);
         }
+
         .glass-widget-scroll::-webkit-scrollbar {
             width: 4px;
         }
+
         .glass-widget-scroll::-webkit-scrollbar-track {
             background: transparent;
         }
+
         .glass-widget-scroll::-webkit-scrollbar-thumb {
             background: rgba(198, 198, 206, 0.7);
             border-radius: 4px;
         }
+
         .glass-widget-scroll::-webkit-scrollbar-thumb:hover {
             background: rgba(118, 118, 126, 0.7);
         }
+
         .glass-widget-pulse::before {
             content: '';
             position: absolute;
@@ -1676,19 +1964,33 @@
             left: 0;
             top: 0;
         }
+
         @keyframes pulse-ring-animation {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { opacity: 0.5; }
-            100% { transform: scale(1.4); opacity: 0; }
+            0% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
         }
+
         .glass-widget-hidden {
             display: none !important;
         }
+
         .glass-widget-bounce-dots {
             display: flex;
             align-items: center;
             gap: 4px;
         }
+
         .glass-widget-dot {
             width: 5px;
             height: 5px;
@@ -1696,14 +1998,29 @@
             border-radius: 50%;
             animation: bounce-dot 1.2s infinite ease-in-out;
         }
-        .glass-widget-dot:nth-child(2) { animation-delay: 0.2s; }
-        .glass-widget-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        .glass-widget-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .glass-widget-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
         @keyframes bounce-dot {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
         }
     </style>
 </head>
+
 <body>
     <!-- ===== LEDGER SCANNER OVERLAY ===== -->
     <div class="scanner-overlay" id="scanner-overlay">
@@ -1777,7 +2094,7 @@
                     <span class="material-symbols-outlined">menu_book</span>
                     Insights
                 </a>
-                <a class="sidebar-link" href="#">
+                <a class="sidebar-link" href="portfolio.html">
                     <span class="material-symbols-outlined">account_balance_wallet</span>
                     Portfolio
                 </a>
@@ -1785,9 +2102,9 @@
                     <span class="material-symbols-outlined">chat</span>
                     Advisor
                 </a>
-                <a class="sidebar-link" href="#">
-                    <span class="material-symbols-outlined">notifications</span>
-                    Alerts
+                <a class="sidebar-link" href="calendar.html">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    Calendar
                 </a>
             </nav>
 
@@ -1834,7 +2151,9 @@
                     <div id="upload-state">
                         <div class="upload-hero">
                             <h1 class="upload-hero-title animate-in animate-delay-1">Understand Your Spending</h1>
-                            <p class="upload-hero-sub animate-in animate-delay-2">Upload your bank statement and let Lumina reveal the patterns in your financial life with beautiful, actionable insights.</p>
+                            <p class="upload-hero-sub animate-in animate-delay-2">Upload your bank statement and let
+                                Lumina reveal the patterns in your financial life with beautiful, actionable insights.
+                            </p>
 
                             <div class="upload-zone animate-in animate-delay-3" id="upload-zone">
                                 <div class="upload-icon">
@@ -1849,7 +2168,7 @@
                                 </div>
                             </div>
 
-                            <input type="file" id="file-input" accept=".pdf,.csv"/>
+                            <input type="file" id="file-input" accept=".pdf,.csv" />
 
                             <div class="upload-divider animate-in animate-delay-4">or</div>
 
@@ -2044,7 +2363,7 @@
             { merchant: "Udemy", category: "Education", amount: 14.99 },
         ];
 
-        const API_URL = 'http://localhost:8000/insights/analyze';
+        const API_URL = '/insights/analyze';
 
         // ===== STATE =====
         let currentData = null;
@@ -2110,6 +2429,8 @@
 
             // Demo button
             demoBtn.addEventListener('click', () => {
+                localStorage.setItem('lumina_insights_transactions', JSON.stringify(DEMO_DATA));
+                localStorage.setItem('lumina_insights_filename', 'Sample Demo Data');
                 startAnalysis(DEMO_DATA, true);
             });
 
@@ -2155,10 +2476,14 @@
                 if (!response.ok) throw new Error('Server error');
 
                 const data = await response.json();
+                localStorage.setItem('lumina_insights_transactions', JSON.stringify(data));
+                localStorage.setItem('lumina_insights_filename', file.name);
                 startAnalysis(data, false);
             } catch (err) {
                 // Backend unavailable — fall back to demo with notice
-                scannerStatus.innerHTML = '<span style="color:var(--gold);">Backend unavailable — using demo data</span>';
+                scannerStatus.innerHTML = `<span style="color:var(--gold);">Upload failed (${err.message}) — using demo data</span>`;
+                localStorage.setItem('lumina_insights_transactions', JSON.stringify(DEMO_DATA));
+                localStorage.setItem('lumina_insights_filename', 'Sample Demo Data (Fallback)');
                 setTimeout(() => {
                     currentData = DEMO_DATA;
                     runScannerAnimation();
@@ -2168,8 +2493,8 @@
 
         // ===== CONSTANTS FOR SCANNING =====
         const SCAN_TAGS = [
-            '$124.99', 'Amazon', 'Shopping', 'Starbucks', 'Food & Dining', 
-            '$15.99', 'Netflix', 'Entertainment', 'Uber', 'Transport', 
+            '$124.99', 'Amazon', 'Shopping', 'Starbucks', 'Food & Dining',
+            '$15.99', 'Netflix', 'Entertainment', 'Uber', 'Transport',
             '$87.50', 'Whole Foods', 'Groceries', 'Delta Airlines', 'Travel',
             '$142.00', 'Bills', 'Utilities', 'CVS Pharmacy', 'Health'
         ];
@@ -2224,9 +2549,9 @@
                 const progress = Math.min(elapsed / duration, 1);
                 const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
                 const value = from + (to - from) * eased;
-                
+
                 scannerProgressBar.style.width = value + '%';
-                
+
                 // Activate nodes sequentially as progress fills
                 const nodeCount = 6;
                 const progressStep = 100 / nodeCount;
@@ -2259,9 +2584,9 @@
         function emitFloatingTag() {
             const tag = document.createElement('div');
             tag.className = 'floating-tag';
-            
+
             const val = SCAN_TAGS[Math.floor(Math.random() * SCAN_TAGS.length)];
-            
+
             let icon = 'description';
             if (val.startsWith('$')) icon = 'payments';
             else if (['Amazon', 'Shopping'].includes(val)) icon = 'shopping_bag';
@@ -2284,14 +2609,14 @@
             tag.style.top = '50%';
             tag.style.marginLeft = '-45px';
             tag.style.marginTop = '-12px';
-            
+
             tag.style.setProperty('--tx', tx + 'px');
             tag.style.setProperty('--ty', ty + 'px');
             tag.style.setProperty('--dur', (1.2 + Math.random() * 0.8) + 's');
 
             scannerContainer.appendChild(tag);
             requestAnimationFrame(() => tag.classList.add('fly'));
-            
+
             setTimeout(() => tag.remove(), 2000);
         }
 
@@ -2344,7 +2669,7 @@
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance;
                 const size = 3 + Math.random() * 6;
-                
+
                 const colors = ['#f59e0b', '#3b82f6', '#8b5cf6', '#60a5fa', '#fcd34d'];
                 const color = colors[i % colors.length];
 
@@ -2352,12 +2677,12 @@
                 p.style.height = size + 'px';
                 p.style.background = color;
                 p.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
-                
+
                 p.style.left = '50%';
                 p.style.top = '50%';
                 p.style.marginLeft = -(size / 2) + 'px';
                 p.style.marginTop = -(size / 2) + 'px';
-                
+
                 p.style.setProperty('--tx', tx + 'px');
                 p.style.setProperty('--ty', ty + 'px');
                 p.style.setProperty('--dur', (0.8 + Math.random() * 0.8) + 's');
@@ -2365,7 +2690,7 @@
 
                 container.appendChild(p);
                 requestAnimationFrame(() => p.classList.add('fly'));
-                
+
                 setTimeout(() => p.remove(), 1600);
             }
         }
@@ -2627,84 +2952,88 @@
 
     </script>
 
-<!-- Floating Chat Widget -->
-<div id="floating-chat-widget" class="glass-widget-hidden">
-    <div class="glass-widget-container">
-        <!-- Mini Chat Panel -->
-        <div id="mini-chat-panel" class="glass-widget-panel">
-            <!-- Panel Header -->
-            <div class="glass-widget-header">
-                <div class="glass-widget-header-left">
-                    <div class="glass-widget-avatar">
-                        <span class="material-symbols-outlined" style="font-size:18px">auto_awesome</span>
-                    </div>
-                    <div>
-                        <div class="glass-widget-header-title">Lumina Advisor</div>
-                        <div class="glass-widget-status">
-                            <span class="glass-widget-status-dot"></span>
-                            <span class="glass-widget-status-text">Online</span>
+    <!-- Floating Chat Widget -->
+    <div id="floating-chat-widget" class="glass-widget-hidden">
+        <div class="glass-widget-container">
+            <!-- Mini Chat Panel -->
+            <div id="mini-chat-panel" class="glass-widget-panel">
+                <!-- Panel Header -->
+                <div class="glass-widget-header">
+                    <div class="glass-widget-header-left">
+                        <div class="glass-widget-avatar">
+                            <span class="material-symbols-outlined" style="font-size:18px">auto_awesome</span>
+                        </div>
+                        <div>
+                            <div class="glass-widget-header-title">Lumina Advisor</div>
+                            <div class="glass-widget-status">
+                                <span class="glass-widget-status-dot"></span>
+                                <span class="glass-widget-status-text">Online</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="glass-widget-header-actions">
-                    <a href="chat.html" class="glass-widget-action-btn" title="Open Full Advisor">
-                        <span class="material-symbols-outlined" style="font-size:18px">open_in_new</span>
-                    </a>
-                    <button id="close-mini-chat" class="glass-widget-action-btn">
-                        <span class="material-symbols-outlined" style="font-size:18px">close</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Panel Messages Body -->
-            <div id="mini-chat-messages" class="glass-widget-body glass-widget-scroll">
-                <!-- Welcome message from AI -->
-                <div class="glass-widget-msg-row">
-                    <div class="glass-widget-msg-avatar">
-                        <span class="material-symbols-outlined">auto_awesome</span>
-                    </div>
-                    <div class="glass-widget-bubble ai">
-                        Hello! I am your Lumina AI Advisor. How can I assist you with your financial goals today?
+                    <div class="glass-widget-header-actions">
+                        <a href="chat.html" class="glass-widget-action-btn" title="Open Full Advisor">
+                            <span class="material-symbols-outlined" style="font-size:18px">open_in_new</span>
+                        </a>
+                        <button id="close-mini-chat" class="glass-widget-action-btn">
+                            <span class="material-symbols-outlined" style="font-size:18px">close</span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Quick Suggestions -->
-                <div id="mini-suggestions" class="glass-widget-suggestions">
-                    <div class="glass-widget-suggestions-title">SUGGESTIONS</div>
-                    <button class="glass-widget-chip" onclick="sendMiniSuggestion('Analyze my portfolio risk exposure')">
-                        Analyze portfolio risk exposure
-                    </button>
-                    <button class="glass-widget-chip" onclick="sendMiniSuggestion('What are today\'s market highlights?')">
-                        What are today's market highlights?
-                    </button>
-                    <button class="glass-widget-chip" onclick="sendMiniSuggestion('Suggest a rebalancing strategy')">
-                        Suggest a rebalancing strategy
-                    </button>
+                <!-- Panel Messages Body -->
+                <div id="mini-chat-messages" class="glass-widget-body glass-widget-scroll">
+                    <!-- Welcome message from AI -->
+                    <div class="glass-widget-msg-row">
+                        <div class="glass-widget-msg-avatar">
+                            <span class="material-symbols-outlined">auto_awesome</span>
+                        </div>
+                        <div class="glass-widget-bubble ai">
+                            Hello! I am your Lumina AI Advisor. How can I assist you with your financial goals today?
+                        </div>
+                    </div>
+
+                    <!-- Quick Suggestions -->
+                    <div id="mini-suggestions" class="glass-widget-suggestions">
+                        <div class="glass-widget-suggestions-title">SUGGESTIONS</div>
+                        <button class="glass-widget-chip"
+                            onclick="sendMiniSuggestion('Analyze my portfolio risk exposure')">
+                            Analyze portfolio risk exposure
+                        </button>
+                        <button class="glass-widget-chip"
+                            onclick="sendMiniSuggestion('What are today\'s market highlights?')">
+                            What are today's market highlights?
+                        </button>
+                        <button class="glass-widget-chip"
+                            onclick="sendMiniSuggestion('Suggest a rebalancing strategy')">
+                            Suggest a rebalancing strategy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Panel Input Area -->
+                <div class="glass-widget-input-area">
+                    <div class="glass-widget-input-wrapper">
+                        <textarea id="mini-message-input" rows="1" class="glass-widget-textarea"
+                            placeholder="Ask Lumina..."></textarea>
+                        <button id="send-mini-btn" class="glass-widget-send-btn" disabled>
+                            <span class="material-symbols-outlined" style="font-size:16px">arrow_upward</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Panel Input Area -->
-            <div class="glass-widget-input-area">
-                <div class="glass-widget-input-wrapper">
-                    <textarea id="mini-message-input" rows="1" class="glass-widget-textarea" placeholder="Ask Lumina..."></textarea>
-                    <button id="send-mini-btn" class="glass-widget-send-btn" disabled>
-                        <span class="material-symbols-outlined" style="font-size:16px">arrow_upward</span>
-                    </button>
-                </div>
-            </div>
+            <!-- Floating Bubble Launcher Button -->
+            <button id="floating-chat-bubble" class="glass-widget-launcher glass-widget-pulse">
+                <span class="material-symbols-outlined" style="font-size:24px">chat</span>
+            </button>
         </div>
-
-        <!-- Floating Bubble Launcher Button -->
-        <button id="floating-chat-bubble" class="glass-widget-launcher glass-widget-pulse">
-            <span class="material-symbols-outlined" style="font-size:24px">chat</span>
-        </button>
     </div>
-</div>
 
-<script>
-    // ── Floating Chat Bubble Widget Logic ──
-    const aiResponses = {
-        "analyze my portfolio risk exposure": `Based on your current portfolio composition, here's your risk analysis:
+    <script>
+        // ── Floating Chat Bubble Widget Logic ──
+        const aiResponses = {
+            "analyze my portfolio risk exposure": `Based on your current portfolio composition, here's your risk analysis:
 
 **Overall Risk Score: 6.2 / 10** (Moderate)
 
@@ -2722,7 +3051,7 @@ Your allocation of **65% Fixed Equities** provides a solid foundation, though co
 
 Would you like me to simulate different allocation scenarios?`,
 
-        "what are today's market highlights?": `Here are today's key market movements:
+            "what are today's market highlights?": `Here are today's key market movements:
 
 **U.S. Markets — Bullish Momentum**
 The S&P 500 is up **+0.85%**, continuing its upward trajectory. The technology sector leads gains with NASDAQ up **+1.2%**.
@@ -2737,7 +3066,7 @@ The S&P 500 is up **+0.85%**, continuing its upward trajectory. The technology s
 
 Shall I provide a deeper analysis of any sector?`,
 
-        "suggest a rebalancing strategy": `Based on your current allocation and market conditions, I recommend a **Tactical Rebalancing** approach:
+            "suggest a rebalancing strategy": `Based on your current allocation and market conditions, I recommend a **Tactical Rebalancing** approach:
 
 **Current vs. Recommended Allocation:**
 
@@ -2750,118 +3079,118 @@ Shall I provide a deeper analysis of any sector?`,
 | Liquidity | 15% | 10% | Reduce |
 
 Would you like me to generate specific trade orders for this rebalancing?`
-    };
+        };
 
-    const genericResponses = [
-        `That's an excellent question. Let me provide some context based on current market data and your portfolio.
+        const genericResponses = [
+            `That's an excellent question. Let me provide some context based on current market data and your portfolio.
         
 Based on your portfolio valued at **$1,420,850**, your position is well-suited for both growth and stability strategies. Would you like me to run a detailed analysis on any specific aspect?`,
-        `I've analyzed your query against current market conditions and your financial profile.
+            `I've analyzed your query against current market conditions and your financial profile.
         
 Your portfolio's current structure shows resilience. With the S&P 500 trending upward at **+0.85%**, and your tech allocation performing well, you're in a strong position.`,
-        `Given your net worth of **$1.42M** and moderate risk profile, the answer depends on your time horizon and liquidity needs.
+            `Given your net worth of **$1.42M** and moderate risk profile, the answer depends on your time horizon and liquidity needs.
         
 Historical analysis suggests that disciplined, systematic approaches outperform reactive strategies by approximately **2-3% annually** over a 10-year period.`
-    ];
+        ];
 
-    const widget = document.getElementById('floating-chat-widget');
-    const bubbleBtn = document.getElementById('floating-chat-bubble');
-    const miniPanel = document.getElementById('mini-chat-panel');
-    const closeBtn = document.getElementById('close-mini-chat');
-    const miniMessages = document.getElementById('mini-chat-messages');
-    const miniInput = document.getElementById('mini-message-input');
-    const sendMiniBtn = document.getElementById('send-mini-btn');
-    const miniSuggestions = document.getElementById('mini-suggestions');
+        const widget = document.getElementById('floating-chat-widget');
+        const bubbleBtn = document.getElementById('floating-chat-bubble');
+        const miniPanel = document.getElementById('mini-chat-panel');
+        const closeBtn = document.getElementById('close-mini-chat');
+        const miniMessages = document.getElementById('mini-chat-messages');
+        const miniInput = document.getElementById('mini-message-input');
+        const sendMiniBtn = document.getElementById('send-mini-btn');
+        const miniSuggestions = document.getElementById('mini-suggestions');
 
-    let miniIsGenerating = false;
+        let miniIsGenerating = false;
 
-    // Check if widget should be shown
-    function initChatWidget() {
-        const enabled = localStorage.getItem('lumina_chat_bubble_enabled') !== 'false';
-        if (enabled) {
-            widget.classList.remove('glass-widget-hidden');
-        } else {
-            widget.classList.add('glass-widget-hidden');
-            closeMiniChatPanel();
+        // Check if widget should be shown
+        function initChatWidget() {
+            const enabled = localStorage.getItem('lumina_chat_bubble_enabled') !== 'false';
+            if (enabled) {
+                widget.classList.remove('glass-widget-hidden');
+            } else {
+                widget.classList.add('glass-widget-hidden');
+                closeMiniChatPanel();
+            }
         }
-    }
 
-    function toggleMiniChatPanel() {
-        const isOpen = miniPanel.classList.contains('open');
-        if (isOpen) {
-            closeMiniChatPanel();
-        } else {
-            openMiniChatPanel();
+        function toggleMiniChatPanel() {
+            const isOpen = miniPanel.classList.contains('open');
+            if (isOpen) {
+                closeMiniChatPanel();
+            } else {
+                openMiniChatPanel();
+            }
         }
-    }
 
-    function openMiniChatPanel() {
-        miniPanel.classList.add('open');
-        setTimeout(() => miniInput.focus(), 100);
-    }
+        function openMiniChatPanel() {
+            miniPanel.classList.add('open');
+            setTimeout(() => miniInput.focus(), 100);
+        }
 
-    function closeMiniChatPanel() {
-        miniPanel.classList.remove('open');
-    }
+        function closeMiniChatPanel() {
+            miniPanel.classList.remove('open');
+        }
 
-    // Scroll to bottom helper
-    function scrollMiniToBottom() {
-        requestAnimationFrame(() => {
-            miniMessages.scrollTo({
-                top: miniMessages.scrollHeight,
-                behavior: 'smooth'
+        // Scroll to bottom helper
+        function scrollMiniToBottom() {
+            requestAnimationFrame(() => {
+                miniMessages.scrollTo({
+                    top: miniMessages.scrollHeight,
+                    behavior: 'smooth'
+                });
             });
-        });
-    }
-
-    // Markdown-like formatting helper (lightweight)
-    function formatMiniMarkdown(text) {
-        // Tables
-        text = text.replace(/\n\|(.+)\|\n\|[-|]+\|\n((?:\|.+\|\n?)+)/g, (match, header, rows) => {
-            const headers = header.split('|').map(h => h.trim()).filter(Boolean);
-            const rowLines = rows.trim().split('\n');
-            let table = '<table style="width: 100%; margin: 8px 0; font-size: 11px; border-collapse: collapse;"><thead><tr>';
-            headers.forEach(h => { table += `<th style="text-align: left; padding: 6px; border-bottom: 1px solid var(--outline-variant); color: var(--outline); font-weight: 600;">${h}</th>`; });
-            table += '</tr></thead><tbody>';
-            rowLines.forEach(r => {
-                const cols = r.split('|').map(c => c.trim()).filter(Boolean);
-                table += '<tr>';
-                cols.forEach(c => { table += `<td style="padding: 4px 6px; border-bottom: 1px solid rgba(198, 198, 206, 0.3);">${c}</td>`; });
-                table += '</tr>';
-            });
-            table += '</tbody></table>';
-            return table;
-        });
-
-        // Bold
-        text = text.replace(/\*\*(.+?)\*\*/g, '<strong style="font-weight: 600; color: var(--primary);">$1</strong>');
-        // Bullet points
-        text = text.replace(/^-\s+(.+)/gm, '<div style="display: flex; gap: 8px; margin: 2px 0;"><span style="color: var(--primary);">•</span><span>$1</span></div>');
-        // Line breaks
-        text = text.replace(/\n\n/g, '<div style="height: 8px;"></div>');
-        text = text.replace(/\n/g, '<br/>');
-        return text;
-    }
-
-    function addMiniUserMessage(text) {
-        if (miniSuggestions) {
-            miniSuggestions.style.display = 'none';
         }
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'glass-widget-msg-row user';
-        msgDiv.innerHTML = `
+
+        // Markdown-like formatting helper (lightweight)
+        function formatMiniMarkdown(text) {
+            // Tables
+            text = text.replace(/\n\|(.+)\|\n\|[-|]+\|\n((?:\|.+\|\n?)+)/g, (match, header, rows) => {
+                const headers = header.split('|').map(h => h.trim()).filter(Boolean);
+                const rowLines = rows.trim().split('\n');
+                let table = '<table style="width: 100%; margin: 8px 0; font-size: 11px; border-collapse: collapse;"><thead><tr>';
+                headers.forEach(h => { table += `<th style="text-align: left; padding: 6px; border-bottom: 1px solid var(--outline-variant); color: var(--outline); font-weight: 600;">${h}</th>`; });
+                table += '</tr></thead><tbody>';
+                rowLines.forEach(r => {
+                    const cols = r.split('|').map(c => c.trim()).filter(Boolean);
+                    table += '<tr>';
+                    cols.forEach(c => { table += `<td style="padding: 4px 6px; border-bottom: 1px solid rgba(198, 198, 206, 0.3);">${c}</td>`; });
+                    table += '</tr>';
+                });
+                table += '</tbody></table>';
+                return table;
+            });
+
+            // Bold
+            text = text.replace(/\*\*(.+?)\*\*/g, '<strong style="font-weight: 600; color: var(--primary);">$1</strong>');
+            // Bullet points
+            text = text.replace(/^-\s+(.+)/gm, '<div style="display: flex; gap: 8px; margin: 2px 0;"><span style="color: var(--primary);">•</span><span>$1</span></div>');
+            // Line breaks
+            text = text.replace(/\n\n/g, '<div style="height: 8px;"></div>');
+            text = text.replace(/\n/g, '<br/>');
+            return text;
+        }
+
+        function addMiniUserMessage(text) {
+            if (miniSuggestions) {
+                miniSuggestions.style.display = 'none';
+            }
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'glass-widget-msg-row user';
+            msgDiv.innerHTML = `
             <div class="glass-widget-bubble user">
                 ${text}
             </div>
         `;
-        miniMessages.appendChild(msgDiv);
-        scrollMiniToBottom();
-    }
+            miniMessages.appendChild(msgDiv);
+            scrollMiniToBottom();
+        }
 
-    function addMiniAIMessage(text) {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'glass-widget-msg-row';
-        msgDiv.innerHTML = `
+        function addMiniAIMessage(text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'glass-widget-msg-row';
+            msgDiv.innerHTML = `
             <div class="glass-widget-msg-avatar">
                 <span class="material-symbols-outlined">auto_awesome</span>
             </div>
@@ -2869,15 +3198,15 @@ Historical analysis suggests that disciplined, systematic approaches outperform 
                 ${formatMiniMarkdown(text)}
             </div>
         `;
-        miniMessages.appendChild(msgDiv);
-        scrollMiniToBottom();
-    }
+            miniMessages.appendChild(msgDiv);
+            scrollMiniToBottom();
+        }
 
-    function showMiniTypingIndicator() {
-        const indicator = document.createElement('div');
-        indicator.id = 'mini-typing-indicator';
-        indicator.className = 'glass-widget-msg-row';
-        indicator.innerHTML = `
+        function showMiniTypingIndicator() {
+            const indicator = document.createElement('div');
+            indicator.id = 'mini-typing-indicator';
+            indicator.className = 'glass-widget-msg-row';
+            indicator.innerHTML = `
             <div class="glass-widget-msg-avatar">
                 <span class="material-symbols-outlined">auto_awesome</span>
             </div>
@@ -2889,87 +3218,88 @@ Historical analysis suggests that disciplined, systematic approaches outperform 
                 </div>
             </div>
         `;
-        miniMessages.appendChild(indicator);
-        scrollMiniToBottom();
-    }
-
-    // Export so Suggestions buttons can access it
-    window.sendMiniSuggestion = function(text) {
-        sendMiniMessage(text);
-    };
-
-    function removeMiniTypingIndicator() {
-        const indicator = document.getElementById('mini-typing-indicator');
-        if (indicator) indicator.remove();
-    }
-
-    async function sendMiniMessage(text) {
-        if (!text.trim() || miniIsGenerating) return;
-        miniIsGenerating = true;
-        sendMiniBtn.disabled = true;
-
-        addMiniUserMessage(text);
-        miniInput.value = '';
-        miniInput.style.height = 'auto';
-
-        showMiniTypingIndicator();
-
-        const thinkTime = 1000 + Math.random() * 1000;
-        await new Promise(resolve => setTimeout(resolve, thinkTime));
-
-        removeMiniTypingIndicator();
-
-        const normalized = text.toLowerCase().trim();
-        const response = aiResponses[normalized] || genericResponses[Math.floor(Math.random() * genericResponses.length)];
-        addMiniAIMessage(response);
-
-        miniIsGenerating = false;
-        updateMiniSendButton();
-    }
-
-    function updateMiniSendButton() {
-        sendMiniBtn.disabled = miniInput.value.trim().length === 0 || miniIsGenerating;
-    }
-
-    // Event Listeners
-    bubbleBtn.addEventListener('click', toggleMiniChatPanel);
-    closeBtn.addEventListener('click', closeMiniChatPanel);
-    
-    miniInput.addEventListener('input', () => {
-        miniInput.style.height = 'auto';
-        miniInput.style.height = Math.min(miniInput.scrollHeight, 100) + 'px';
-        updateMiniSendButton();
-    });
-
-    miniInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMiniMessage(miniInput.value);
+            miniMessages.appendChild(indicator);
+            scrollMiniToBottom();
         }
-    });
 
-    sendMiniBtn.addEventListener('click', () => {
-        sendMiniMessage(miniInput.value);
-    });
+        // Export so Suggestions buttons can access it
+        window.sendMiniSuggestion = function (text) {
+            sendMiniMessage(text);
+        };
 
-    // Listen to localStorage changes across tabs to instantly show/hide widget
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'lumina_chat_bubble_enabled') {
+        function removeMiniTypingIndicator() {
+            const indicator = document.getElementById('mini-typing-indicator');
+            if (indicator) indicator.remove();
+        }
+
+        async function sendMiniMessage(text) {
+            if (!text.trim() || miniIsGenerating) return;
+            miniIsGenerating = true;
+            sendMiniBtn.disabled = true;
+
+            addMiniUserMessage(text);
+            miniInput.value = '';
+            miniInput.style.height = 'auto';
+
+            showMiniTypingIndicator();
+
+            const thinkTime = 1000 + Math.random() * 1000;
+            await new Promise(resolve => setTimeout(resolve, thinkTime));
+
+            removeMiniTypingIndicator();
+
+            const normalized = text.toLowerCase().trim();
+            const response = aiResponses[normalized] || genericResponses[Math.floor(Math.random() * genericResponses.length)];
+            addMiniAIMessage(response);
+
+            miniIsGenerating = false;
+            updateMiniSendButton();
+        }
+
+        function updateMiniSendButton() {
+            sendMiniBtn.disabled = miniInput.value.trim().length === 0 || miniIsGenerating;
+        }
+
+        // Event Listeners
+        bubbleBtn.addEventListener('click', toggleMiniChatPanel);
+        closeBtn.addEventListener('click', closeMiniChatPanel);
+
+        miniInput.addEventListener('input', () => {
+            miniInput.style.height = 'auto';
+            miniInput.style.height = Math.min(miniInput.scrollHeight, 100) + 'px';
+            updateMiniSendButton();
+        });
+
+        miniInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMiniMessage(miniInput.value);
+            }
+        });
+
+        sendMiniBtn.addEventListener('click', () => {
+            sendMiniMessage(miniInput.value);
+        });
+
+        // Listen to localStorage changes across tabs to instantly show/hide widget
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'lumina_chat_bubble_enabled') {
+                initChatWidget();
+            }
+        });
+
+        // ===== INIT =====
+        function init() {
+            updateClock();
+            setInterval(updateClock, 1000);
+            setupUpload();
+
+            // Init chat widget
             initChatWidget();
         }
-    });
 
-    // ===== INIT =====
-    function init() {
-        updateClock();
-        setInterval(updateClock, 1000);
-        setupUpload();
-
-        // Init chat widget
-        initChatWidget();
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-</script>
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
+
 </html>

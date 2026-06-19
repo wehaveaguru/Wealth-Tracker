@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Lumina Editorial | Portfolio</title>
+    <meta name="description"
+        content="Your investment portfolio with holdings, asset allocation, performance metrics, and transaction history." />
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #0c132c;
+            --primary-container: #212842;
+            --on-primary: #ffffff;
+            --surface: #faf8ff;
+            --surface-dim: #d6d9ec;
+            --surface-container-low: #f2f3ff;
+            --surface-container: #eaedff;
+            --surface-container-high: #e4e7fa;
+            --on-surface: #171b28;
+            --on-surface-variant: #46464d;
+            --outline: #76767e;
+            --outline-variant: #c6c6ce;
+            --secondary: #645e50;
+            --secondary-container: #eae2d0;
+            --error: #ba1a1a;
+            --gain: #16a34a;
+            --gain-bg: #f0fdf4;
+            --gain-subtle: #bbf7d0;
+            --loss: #dc2626;
+            --loss-bg: #fef2f2;
+            --loss-subtle: #fecaca;
+            --gold: #d97706;
+            --gold-bg: #fffbeb;
+            --shadow-sm: 0 1px 2px rgba(12, 19, 44, 0.04);
+            --shadow-md: 0 4px 12px rgba(12, 19, 44, 0.06);
+            --shadow-lg: 0 8px 30px rgba(12, 19, 44, 0.08);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--surface);
+            color: var(--on-surface);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--outline-variant);
+            border-radius: 3px;
+        }
+
+        .app-shell {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--surface);
+            border-right: 1px solid var(--outline-variant);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand {
+            padding: 28px 32px;
+        }
+
+        .sidebar-brand h1 {
+            font-family: 'EB Garamond', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 0 16px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-link:hover {
+            background: var(--surface-container-low);
+            color: var(--on-surface);
+        }
+
+        .sidebar-link.active {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+
+        .sidebar-link .material-symbols-outlined {
+            font-size: 22px;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--outline-variant);
+        }
+
+        .market-pulse {
+            padding: 20px 24px;
+            border-top: 1px solid var(--outline-variant);
+        }
+
+        .market-pulse-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--outline);
+            margin-bottom: 8px;
+        }
+
+        .market-pulse-value {
+            font-family: 'EB Garamond', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .market-pulse-change {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            background: var(--gain-bg);
+            color: var(--gain);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            height: 72px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--outline-variant);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            flex-shrink: 0;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .time-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--on-surface-variant);
+            background: var(--surface-container-low);
+            padding: 6px 14px;
+            border-radius: 8px;
+        }
+
+        .icon-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--on-surface-variant);
+            padding: 6px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: var(--surface-container-low);
+            color: var(--primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 7px;
+            height: 7px;
+            background: var(--error);
+            border-radius: 50%;
+            border: 2px solid var(--surface);
+        }
+
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 20px;
+            border-left: 1px solid var(--outline-variant);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--on-primary);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 40px;
+            background: var(--surface);
+        }
+
+        .content-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-subtitle {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--outline);
+        }
+
+        .section-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 20px;
+        }
+
+        /* Hero */
+        .portfolio-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+            border-radius: 18px;
+            padding: 36px 40px;
+            color: var(--on-primary);
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-hero::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(191, 197, 231, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 24px;
+        }
+
+        .hero-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .hero-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-change-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .hero-change {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 8px;
+        }
+
+        .hero-change.up {
+            background: rgba(22, 163, 74, 0.25);
+            color: #4ade80;
+        }
+
+        .hero-change.down {
+            background: rgba(220, 38, 38, 0.25);
+            color: #fca5a5;
+        }
+
+        .hero-day-label {
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+        }
+
+        .hero-stat {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 16px 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-stat-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 6px;
+        }
+
+        .hero-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .hero-chart {
+            position: relative;
+            z-index: 1;
+            height: 100px;
+        }
+
+        .hero-chart canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--outline-variant);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        /* Metrics row */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--outline-variant);
+            border-radius: 14px;
+            padding: 20px 22px;
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            border-color: transparent;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--outline);
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metric-sub {
+            font-size: 12px;
+            color: var(--outline);
+            margin-top: 4px;
+        }
+
+        .metric-value.gain {
+            color: var(--gain);
+        }
+
+        .metric-value.loss {
+            color: var(--loss);
+        }
+
+        /* Main grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        /* Holdings table */
+        .holdings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .holdings-table thead th {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--outline);
+            padding: 10px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--outline-variant);
+            background: var(--surface-container-low);
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.2s;
+        }
+
+        .holdings-table thead th:hover {
+            color: var(--primary);
+        }
+
+        .holdings-table thead th.sorted {
+            color: var(--primary);
+        }
+
+        .holdings-table thead th.right,
+        .holdings-table td.right {
+            text-align: right;
+        }
+
+        .holdings-table tbody tr {
+            border-bottom: 1px solid rgba(198, 198, 206, 0.4);
+            transition: background 0.15s;
+        }
+
+        .holdings-table tbody tr:hover {
+            background: var(--surface-container-low);
+        }
+
+        .holdings-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .holdings-table td {
+            padding: 14px 16px;
+            font-size: 14px;
+        }
+
+        .h-symbol {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--primary);
+        }
+
+        .h-name {
+            font-size: 12px;
+            color: var(--outline);
+            margin-top: 2px;
+        }
+
+        .h-mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .h-gain {
+            color: var(--gain);
+        }
+
+        .h-loss {
+            color: var(--loss);
+        }
+
+        .weight-bar {
+            width: 60px;
+            height: 6px;
+            background: var(--surface-container);
+            border-radius: 3px;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        .weight-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* Allocation donut */
+        .donut-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .donut-svg {
+            width: 200px;
+            height: 200px;
+        }
+
+        .donut-legend {
+            width: 100%;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(198, 198, 206, 0.3);
+        }
+
+        .legend-item:last-child {
+            border-bottom: none;
+        }
+
+        .legend-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+
+        .legend-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--on-surface);
+        }
+
+        .legend-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--on-surface);
+        }
+
+        /* Bottom grid */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        /* Transactions */
+        .txn-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(198, 198, 206, 0.3);
+        }
+
+        .txn-item:last-child {
+            border-bottom: none;
+        }
+
+        .txn-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .txn-icon.buy {
+            background: var(--gain-bg);
+            color: var(--gain);
+        }
+
+        .txn-icon.sell {
+            background: var(--loss-bg);
+            color: var(--loss);
+        }
+
+        .txn-icon.dividend {
+            background: var(--gold-bg);
+            color: var(--gold);
+        }
+
+        .txn-icon .material-symbols-outlined {
+            font-size: 20px;
+            font-variation-settings: 'FILL' 1;
+        }
+
+        .txn-info {
+            flex: 1;
+        }
+
+        .txn-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--on-surface);
+        }
+
+        .txn-sub {
+            font-size: 11px;
+            color: var(--outline);
+            margin-top: 2px;
+        }
+
+        .txn-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .txn-amount.positive {
+            color: var(--gain);
+        }
+
+        .txn-amount.negative {
+            color: var(--loss);
+        }
+
+        .txn-date {
+            font-size: 11px;
+            color: var(--outline);
+            text-align: right;
+        }
+
+        /* Dividends */
+        .div-summary {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .div-card {
+            flex: 1;
+            background: var(--surface-container-low);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--outline-variant);
+            text-align: center;
+        }
+
+        .div-card-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--outline);
+            margin-bottom: 6px;
+        }
+
+        .div-card-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .div-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(198, 198, 206, 0.3);
+        }
+
+        .div-item:last-child {
+            border-bottom: none;
+        }
+
+        .div-stock {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--primary);
+        }
+
+        .div-stock-name {
+            font-size: 11px;
+            color: var(--outline);
+        }
+
+        .div-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gain);
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fade-in-up 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .animate-delay-1 {
+            animation-delay: 0.05s;
+        }
+
+        .animate-delay-2 {
+            animation-delay: 0.1s;
+        }
+
+        .animate-delay-3 {
+            animation-delay: 0.15s;
+        }
+
+        .animate-delay-4 {
+            animation-delay: 0.2s;
+        }
+
+        @media (max-width: 1200px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+
+            .scroll-area {
+                padding: 20px;
+            }
+
+            .top-bar {
+                padding: 0 20px;
+            }
+
+            .hero-top {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .hero-stats {
+                flex-wrap: wrap;
+            }
+
+            .metrics-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .metrics-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h1>Lumina</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link" href="homepage.html"><span class="material-symbols-outlined">dashboard</span>
+                    Overview</a>
+                <a class="sidebar-link" href="marker.html"><span class="material-symbols-outlined">trending_up</span>
+                    Market</a>
+                <a class="sidebar-link" href="insights.html"><span class="material-symbols-outlined">menu_book</span>
+                    Insights</a>
+                <a class="sidebar-link active" href="portfolio.html"><span
+                        class="material-symbols-outlined">account_balance_wallet</span> Portfolio</a>
+                <a class="sidebar-link" href="chat.html"><span class="material-symbols-outlined">chat</span> Advisor</a>
+                <a class="sidebar-link" href="calendar.html"><span
+                        class="material-symbols-outlined">calendar_month</span> Calendar</a>
+            </nav>
+            <div class="market-pulse">
+                <div class="market-pulse-label">Market Pulse</div>
+                <div style="display:flex;align-items:baseline;"><span class="market-pulse-value">5,487.22</span><span
+                        class="market-pulse-change">+0.85%</span></div>
+                <div style="width:100%;height:36px;margin-top:10px;">
+                    <svg viewBox="0 0 200 40" preserveAspectRatio="none"
+                        style="width:100%;height:100%;overflow:visible;">
+                        <defs>
+                            <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#0c132c" stop-opacity="0.15" />
+                                <stop offset="100%" stop-color="#0c132c" stop-opacity="0" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,35 Q25,30 50,28 T100,22 T150,30 T200,8" fill="none" stroke="#0c132c"
+                            stroke-width="2" />
+                        <path d="M0,35 Q25,30 50,28 T100,22 T150,30 T200,8 L200,40 L0,40 Z" fill="url(#pg)" />
+                    </svg>
+                </div>
+            </div>
+            <div class="sidebar-footer"><a class="sidebar-link" href="#"><span
+                        class="material-symbols-outlined">settings</span> Settings</a></div>
+        </aside>
+
+        <div class="main-content">
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <h1 class="page-title">Portfolio</h1>
+                </div>
+                <div class="top-bar-right">
+                    <div class="time-display" id="live-clock"></div>
+                    <button class="icon-btn"><span class="material-symbols-outlined">notifications</span><span
+                            class="notification-badge"></span></button>
+                    <div class="avatar-section">
+                        <div class="avatar">JT</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="scroll-area">
+                <div class="content-grid">
+                    <!-- Portfolio Hero -->
+                    <div class="portfolio-hero animate-in animate-delay-1">
+                        <div class="hero-top">
+                            <div>
+                                <div class="hero-label">Total Portfolio Value</div>
+                                <div class="hero-value">$1,420,850.00</div>
+                                <div class="hero-change-row">
+                                    <span class="hero-change up">+$48,250.00 (+3.52%)</span>
+                                    <span class="hero-day-label">All Time</span>
+                                </div>
+                                <div class="hero-change-row" style="margin-top:4px;">
+                                    <span class="hero-change up">+$4,812.35 (+0.34%)</span>
+                                    <span class="hero-day-label">Today</span>
+                                </div>
+                            </div>
+                            <div class="hero-stats">
+                                <div class="hero-stat">
+                                    <div class="hero-stat-label">Invested</div>
+                                    <div class="hero-stat-value">$1,372,600</div>
+                                </div>
+                                <div class="hero-stat">
+                                    <div class="hero-stat-label">Cash</div>
+                                    <div class="hero-stat-value">$42,850</div>
+                                </div>
+                                <div class="hero-stat">
+                                    <div class="hero-stat-label">Positions</div>
+                                    <div class="hero-stat-value">12</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-chart"><canvas id="portfolio-chart"></canvas></div>
+                    </div>
+
+                    <!-- Performance Metrics -->
+                    <div class="metrics-row animate-in animate-delay-2">
+                        <div class="metric-card">
+                            <div class="metric-label">Total Return</div>
+                            <div class="metric-value gain">+3.52%</div>
+                            <div class="metric-sub">$48,250 all time</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Annual Return</div>
+                            <div class="metric-value gain">+12.8%</div>
+                            <div class="metric-sub">vs S&P 500 +10.2%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Sharpe Ratio</div>
+                            <div class="metric-value">1.42</div>
+                            <div class="metric-sub">Risk-adjusted</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Max Drawdown</div>
+                            <div class="metric-value loss">-8.4%</div>
+                            <div class="metric-sub">Feb 2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Holdings + Allocation -->
+                    <div class="portfolio-grid">
+                        <div class="card animate-in animate-delay-3">
+                            <div class="section-header" style="margin-bottom:12px;">
+                                <div>
+                                    <div class="section-subtitle">Your Assets</div>
+                                    <h2 class="section-title" style="font-size:22px;">Holdings</h2>
+                                </div>
+                            </div>
+                            <div style="overflow-x:auto;">
+                                <table class="holdings-table" id="holdings-table">
+                                    <thead>
+                                        <tr>
+                                            <th data-sort="symbol">Stock</th>
+                                            <th class="right" data-sort="shares">Shares</th>
+                                            <th class="right" data-sort="avgCost">Avg Cost</th>
+                                            <th class="right" data-sort="price">Price</th>
+                                            <th class="right" data-sort="dayChange">Day</th>
+                                            <th class="right" data-sort="totalPL">P&L</th>
+                                            <th class="right" data-sort="weight">Weight</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="holdings-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card animate-in animate-delay-3">
+                            <div class="section-subtitle">Breakdown</div>
+                            <h2 class="section-title" style="font-size:22px; margin-bottom:20px;">Asset Allocation</h2>
+                            <div class="donut-container">
+                                <svg class="donut-svg" viewBox="0 0 200 200" id="donut-chart"></svg>
+                                <div class="donut-legend" id="donut-legend"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions + Dividends -->
+                    <div class="bottom-grid">
+                        <div class="card animate-in animate-delay-4">
+                            <div class="section-header" style="margin-bottom:12px;">
+                                <div>
+                                    <div class="section-subtitle">History</div>
+                                    <h2 class="section-title" style="font-size:22px;">Recent Transactions</h2>
+                                </div>
+                            </div>
+                            <div id="txn-feed"></div>
+                        </div>
+
+                        <div class="card animate-in animate-delay-4">
+                            <div class="section-header" style="margin-bottom:12px;">
+                                <div>
+                                    <div class="section-subtitle">Income</div>
+                                    <h2 class="section-title" style="font-size:22px;">Dividends</h2>
+                                </div>
+                            </div>
+                            <div class="div-summary" id="div-summary"></div>
+                            <div id="div-feed"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('live-clock').textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) + ' IST';
+        }
+        updateClock(); setInterval(updateClock, 1000);
+
+        // Portfolio Chart
+        function renderPortfolioChart() {
+            const canvas = document.getElementById('portfolio-chart');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * dpr; canvas.height = 100 * dpr;
+            canvas.style.width = rect.width + 'px'; canvas.style.height = '100px';
+            ctx.scale(dpr, dpr);
+            const w = rect.width, h = 100, pad = 10;
+            const points = [];
+            let val = 1320000;
+            for (let i = 0; i < 60; i++) { val += (Math.random() - 0.42) * 8000; points.push(val); }
+            points.push(1420850);
+            const min = Math.min(...points) * 0.999, max = Math.max(...points) * 1.001, range = max - min;
+            const stepX = (w - pad * 2) / (points.length - 1);
+            const getX = i => pad + i * stepX;
+            const getY = v => pad + (h - pad * 2) - ((v - min) / range) * (h - pad * 2);
+            const gradient = ctx.createLinearGradient(0, 0, 0, h);
+            gradient.addColorStop(0, 'rgba(74, 222, 128, 0.25)');
+            gradient.addColorStop(1, 'rgba(74, 222, 128, 0)');
+            ctx.beginPath(); ctx.moveTo(getX(0), getY(points[0]));
+            for (let i = 1; i < points.length; i++) { const cx = (getX(i - 1) + getX(i)) / 2; ctx.bezierCurveTo(cx, getY(points[i - 1]), cx, getY(points[i]), getX(i), getY(points[i])); }
+            ctx.lineTo(getX(points.length - 1), h); ctx.lineTo(getX(0), h); ctx.closePath();
+            ctx.fillStyle = gradient; ctx.fill();
+            ctx.beginPath(); ctx.moveTo(getX(0), getY(points[0]));
+            for (let i = 1; i < points.length; i++) { const cx = (getX(i - 1) + getX(i)) / 2; ctx.bezierCurveTo(cx, getY(points[i - 1]), cx, getY(points[i]), getX(i), getY(points[i])); }
+            ctx.strokeStyle = '#4ade80'; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke();
+        }
+        renderPortfolioChart();
+        window.addEventListener('resize', renderPortfolioChart);
+
+        // Holdings Data
+        const holdings = [
+            { symbol: 'AAPL', name: 'Apple Inc', shares: 150, avgCost: 168.20, price: 198.45, dayChange: '+1.24%', sector: 'Technology' },
+            { symbol: 'MSFT', name: 'Microsoft Corp', shares: 80, avgCost: 380.50, price: 442.57, dayChange: '+0.89%', sector: 'Technology' },
+            { symbol: 'NVDA', name: 'NVIDIA Corp', shares: 45, avgCost: 850.30, price: 1248.92, dayChange: '+8.42%', sector: 'Technology' },
+            { symbol: 'GOOGL', name: 'Alphabet Inc', shares: 120, avgCost: 142.80, price: 178.92, dayChange: '+1.56%', sector: 'Technology' },
+            { symbol: 'AMZN', name: 'Amazon.com', shares: 95, avgCost: 155.40, price: 197.84, dayChange: '+2.93%', sector: 'Consumer' },
+            { symbol: 'JPM', name: 'JPMorgan Chase', shares: 60, avgCost: 172.30, price: 208.72, dayChange: '+0.56%', sector: 'Finance' },
+            { symbol: 'JNJ', name: 'Johnson & Johnson', shares: 85, avgCost: 148.60, price: 156.19, dayChange: '+0.34%', sector: 'Healthcare' },
+            { symbol: 'V', name: 'Visa Inc', shares: 40, avgCost: 248.90, price: 284.91, dayChange: '+0.78%', sector: 'Finance' },
+            { symbol: 'PG', name: 'Procter & Gamble', shares: 55, avgCost: 152.40, price: 168.43, dayChange: '-0.15%', sector: 'Consumer' },
+            { symbol: 'XOM', name: 'Exxon Mobil', shares: 70, avgCost: 98.50, price: 112.38, dayChange: '-0.82%', sector: 'Energy' },
+            { symbol: 'KO', name: 'Coca-Cola Co', shares: 100, avgCost: 56.80, price: 62.18, dayChange: '-1.87%', sector: 'Consumer' },
+            { symbol: 'META', name: 'Meta Platforms', shares: 30, avgCost: 410.20, price: 518.73, dayChange: '+4.95%', sector: 'Technology' },
+        ];
+
+        const totalPortfolio = holdings.reduce((sum, h) => sum + h.shares * h.price, 0);
+
+        function renderHoldings(sortBy, sortDir) {
+            const sorted = [...holdings].sort((a, b) => {
+                let va, vb;
+                if (sortBy === 'symbol') { va = a.symbol; vb = b.symbol; return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va); }
+                if (sortBy === 'shares') { va = a.shares; vb = b.shares; }
+                else if (sortBy === 'avgCost') { va = a.avgCost; vb = b.avgCost; }
+                else if (sortBy === 'price') { va = a.price; vb = b.price; }
+                else if (sortBy === 'dayChange') { va = parseFloat(a.dayChange); vb = parseFloat(b.dayChange); }
+                else if (sortBy === 'totalPL') { va = (a.price - a.avgCost) * a.shares; vb = (b.price - b.avgCost) * b.shares; }
+                else if (sortBy === 'weight') { va = a.shares * a.price; vb = b.shares * b.price; }
+                else { va = a.shares * a.price; vb = b.shares * b.price; }
+                return sortDir === 'asc' ? va - vb : vb - va;
+            });
+
+            document.getElementById('holdings-body').innerHTML = sorted.map(h => {
+                const pl = (h.price - h.avgCost) * h.shares;
+                const plPct = ((h.price - h.avgCost) / h.avgCost * 100).toFixed(2);
+                const isGain = pl >= 0;
+                const weight = (h.shares * h.price / totalPortfolio * 100).toFixed(1);
+                const dayVal = parseFloat(h.dayChange);
+                return `<tr>
+                    <td><div class="h-symbol">${h.symbol}</div><div class="h-name">${h.name}</div></td>
+                    <td class="right h-mono">${h.shares}</td>
+                    <td class="right h-mono">$${h.avgCost.toFixed(2)}</td>
+                    <td class="right h-mono">$${h.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                    <td class="right h-mono ${dayVal >= 0 ? 'h-gain' : 'h-loss'}">${h.dayChange}</td>
+                    <td class="right"><div class="h-mono ${isGain ? 'h-gain' : 'h-loss'}">$${Math.abs(pl).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</div><div class="h-mono ${isGain ? 'h-gain' : 'h-loss'}" style="font-size:11px;">${isGain ? '+' : '-'}${Math.abs(plPct)}%</div></td>
+                    <td class="right"><span class="weight-bar"><span class="weight-bar-fill" style="width:${weight}%"></span></span><span class="h-mono" style="font-size:12px;">${weight}%</span></td>
+                </tr>`;
+            }).join('');
+        }
+
+        let currentSort = 'weight';
+        let currentSortDir = 'desc';
+        renderHoldings(currentSort, currentSortDir);
+
+        document.querySelectorAll('.holdings-table thead th[data-sort]').forEach(th => {
+            th.addEventListener('click', function () {
+                const sort = this.dataset.sort;
+                if (currentSort === sort) currentSortDir = currentSortDir === 'asc' ? 'desc' : 'asc';
+                else { currentSort = sort; currentSortDir = 'desc'; }
+                document.querySelectorAll('.holdings-table thead th').forEach(t => t.classList.remove('sorted'));
+                this.classList.add('sorted');
+                renderHoldings(currentSort, currentSortDir);
+            });
+        });
+
+        // Donut Chart
+        const sectorAllocation = {};
+        holdings.forEach(h => {
+            const val = h.shares * h.price;
+            sectorAllocation[h.sector] = (sectorAllocation[h.sector] || 0) + val;
+        });
+        const sectorColors = { Technology: '#6366f1', Finance: '#3b82f6', Consumer: '#10b981', Healthcare: '#ec4899', Energy: '#f59e0b' };
+        const sectors = Object.entries(sectorAllocation).sort((a, b) => b[1] - a[1]);
+        const total = sectors.reduce((s, [, v]) => s + v, 0);
+
+        function renderDonut() {
+            const svg = document.getElementById('donut-chart');
+            const cx = 100, cy = 100, r = 80, r2 = 50;
+            let startAngle = -Math.PI / 2;
+            let paths = '';
+            sectors.forEach(([name, value]) => {
+                const pct = value / total;
+                const endAngle = startAngle + pct * Math.PI * 2;
+                const largeArc = pct > 0.5 ? 1 : 0;
+                const x1 = cx + r * Math.cos(startAngle), y1 = cy + r * Math.sin(startAngle);
+                const x2 = cx + r * Math.cos(endAngle), y2 = cy + r * Math.sin(endAngle);
+                const x3 = cx + r2 * Math.cos(endAngle), y3 = cy + r2 * Math.sin(endAngle);
+                const x4 = cx + r2 * Math.cos(startAngle), y4 = cy + r2 * Math.sin(startAngle);
+                paths += `<path d="M${x1},${y1} A${r},${r} 0 ${largeArc},1 ${x2},${y2} L${x3},${y3} A${r2},${r2} 0 ${largeArc},0 ${x4},${y4} Z" fill="${sectorColors[name] || '#76767e'}" style="transition:opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1"/>`;
+                startAngle = endAngle;
+            });
+            paths += `<text x="${cx}" y="${cy - 6}" text-anchor="middle" fill="#0c132c" font-family="JetBrains Mono" font-size="18" font-weight="700">$${(total / 1000).toFixed(0)}K</text>`;
+            paths += `<text x="${cx}" y="${cy + 14}" text-anchor="middle" fill="#76767e" font-family="Inter" font-size="10" font-weight="600" letter-spacing="0.05em">INVESTED</text>`;
+            svg.innerHTML = paths;
+
+            document.getElementById('donut-legend').innerHTML = sectors.map(([name, value]) => {
+                const pct = (value / total * 100).toFixed(1);
+                return `<div class="legend-item"><div class="legend-left"><span class="legend-dot" style="background:${sectorColors[name] || '#76767e'}"></span><span class="legend-label">${name}</span></div><span class="legend-value">${pct}%</span></div>`;
+            }).join('');
+        }
+        renderDonut();
+
+        // Transactions
+        const transactions = [
+            { type: 'buy', icon: 'add_circle', title: 'Buy NVDA', sub: '10 shares @ $1,205.30', amount: '-$12,053.00', date: 'Jun 14, 2026', amtClass: 'negative' },
+            { type: 'sell', icon: 'remove_circle', title: 'Sell INTC', sub: '50 shares @ $32.45', amount: '+$1,622.50', date: 'Jun 12, 2026', amtClass: 'positive' },
+            { type: 'dividend', icon: 'payments', title: 'Dividend AAPL', sub: 'Quarterly dividend', amount: '+$150.00', date: 'Jun 10, 2026', amtClass: 'positive' },
+            { type: 'buy', icon: 'add_circle', title: 'Buy META', sub: '5 shares @ $498.20', amount: '-$2,491.00', date: 'Jun 8, 2026', amtClass: 'negative' },
+            { type: 'dividend', icon: 'payments', title: 'Dividend JPM', sub: 'Quarterly dividend', amount: '+$240.00', date: 'Jun 5, 2026', amtClass: 'positive' },
+            { type: 'buy', icon: 'add_circle', title: 'Buy GOOGL', sub: '20 shares @ $172.40', amount: '-$3,448.00', date: 'Jun 2, 2026', amtClass: 'negative' },
+            { type: 'sell', icon: 'remove_circle', title: 'Sell BA', sub: '15 shares @ $185.60', amount: '+$2,784.00', date: 'May 28, 2026', amtClass: 'positive' },
+        ];
+        document.getElementById('txn-feed').innerHTML = transactions.map(t => `
+            <div class="txn-item">
+                <div class="txn-icon ${t.type}"><span class="material-symbols-outlined">${t.icon}</span></div>
+                <div class="txn-info"><div class="txn-title">${t.title}</div><div class="txn-sub">${t.sub}</div></div>
+                <div><div class="txn-amount ${t.amtClass}">${t.amount}</div><div class="txn-date">${t.date}</div></div>
+            </div>`).join('');
+
+        // Dividends
+        const dividends = [
+            { symbol: 'AAPL', name: 'Apple Inc', amount: '$450.00', frequency: 'Quarterly' },
+            { symbol: 'JPM', name: 'JPMorgan Chase', amount: '$720.00', frequency: 'Quarterly' },
+            { symbol: 'KO', name: 'Coca-Cola Co', amount: '$380.00', frequency: 'Quarterly' },
+            { symbol: 'JNJ', name: 'Johnson & Johnson', amount: '$340.00', frequency: 'Quarterly' },
+            { symbol: 'XOM', name: 'Exxon Mobil', amount: '$462.00', frequency: 'Quarterly' },
+            { symbol: 'PG', name: 'Procter & Gamble', amount: '$286.00', frequency: 'Quarterly' },
+            { symbol: 'V', name: 'Visa Inc', amount: '$128.00', frequency: 'Quarterly' },
+        ];
+        const totalDiv = dividends.reduce((s, d) => s + parseFloat(d.amount.replace('$', '').replace(',', '')), 0);
+        document.getElementById('div-summary').innerHTML = `
+            <div class="div-card"><div class="div-card-label">YTD Income</div><div class="div-card-value">$${totalDiv.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div></div>
+            <div class="div-card"><div class="div-card-label">Annual Est.</div><div class="div-card-value">$${(totalDiv * 2).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div></div>
+            <div class="div-card"><div class="div-card-label">Yield</div><div class="div-card-value">1.95%</div></div>`;
+        document.getElementById('div-feed').innerHTML = dividends.map(d => `
+            <div class="div-item">
+                <div><div class="div-stock">${d.symbol}</div><div class="div-stock-name">${d.name} · ${d.frequency}</div></div>
+                <span class="div-amount">${d.amount}</span>
+            </div>`).join('');
+    </script>
+</body>
+
+</html>

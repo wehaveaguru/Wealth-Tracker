@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Lumina Editorial | Bill Calendar</title>
+    <meta name="description"
+        content="Track and manage your upcoming bills and payment schedule with Lumina's financial calendar." />
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Literata:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #0c132c;
+            --primary-container: #212842;
+            --on-primary: #ffffff;
+            --surface: #faf8ff;
+            --surface-dim: #d6d9ec;
+            --surface-container-low: #f2f3ff;
+            --surface-container: #eaedff;
+            --surface-container-high: #e4e7fa;
+            --on-surface: #171b28;
+            --on-surface-variant: #46464d;
+            --outline: #76767e;
+            --outline-variant: #c6c6ce;
+            --secondary: #645e50;
+            --secondary-container: #eae2d0;
+            --error: #ba1a1a;
+            --gain: #16a34a;
+            --gain-bg: #f0fdf4;
+            --gain-subtle: #bbf7d0;
+            --loss: #dc2626;
+            --loss-bg: #fef2f2;
+            --loss-subtle: #fecaca;
+            --gold: #d97706;
+            --gold-bg: #fffbeb;
+            --purple: #7c3aed;
+            --purple-bg: #f5f3ff;
+            --blue: #3b82f6;
+            --blue-bg: #eff6ff;
+            --teal: #0d9488;
+            --teal-bg: #f0fdfa;
+            --shadow-sm: 0 1px 2px rgba(12, 19, 44, 0.04);
+            --shadow-md: 0 4px 12px rgba(12, 19, 44, 0.06);
+            --shadow-lg: 0 8px 30px rgba(12, 19, 44, 0.08);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--surface);
+            color: var(--on-surface);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--outline-variant);
+            border-radius: 3px;
+        }
+
+        .app-shell {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--surface);
+            border-right: 1px solid var(--outline-variant);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand {
+            padding: 28px 32px;
+        }
+
+        .sidebar-brand h1 {
+            font-family: 'EB Garamond', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 0 16px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-link:hover {
+            background: var(--surface-container-low);
+            color: var(--on-surface);
+        }
+
+        .sidebar-link.active {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+
+        .sidebar-link .material-symbols-outlined {
+            font-size: 22px;
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--outline-variant);
+        }
+
+        .market-pulse {
+            padding: 20px 24px;
+            border-top: 1px solid var(--outline-variant);
+        }
+
+        .market-pulse-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--outline);
+            margin-bottom: 8px;
+        }
+
+        .market-pulse-value {
+            font-family: 'EB Garamond', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .market-pulse-change {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            background: var(--gain-bg);
+            color: var(--gain);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            height: 72px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--outline-variant);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            flex-shrink: 0;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .time-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--on-surface-variant);
+            background: var(--surface-container-low);
+            padding: 6px 14px;
+            border-radius: 8px;
+        }
+
+        .icon-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--on-surface-variant);
+            padding: 6px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: var(--surface-container-low);
+            color: var(--primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 7px;
+            height: 7px;
+            background: var(--error);
+            border-radius: 50%;
+            border: 2px solid var(--surface);
+        }
+
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 20px;
+            border-left: 1px solid var(--outline-variant);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--on-primary);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 40px;
+            background: var(--surface);
+        }
+
+        .content-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-subtitle {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--outline);
+        }
+
+        .section-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 20px;
+        }
+
+        /* Summary Cards */
+        .summary-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .summary-card {
+            background: var(--surface);
+            border: 1px solid var(--outline-variant);
+            border-radius: 14px;
+            padding: 20px 22px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            border-color: transparent;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .summary-card.total::before {
+            background: var(--primary);
+        }
+
+        .summary-card.due::before {
+            background: var(--loss);
+        }
+
+        .summary-card.paid::before {
+            background: var(--gain);
+        }
+
+        .summary-card.upcoming::before {
+            background: var(--gold);
+        }
+
+        .summary-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--outline);
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .summary-sub {
+            font-size: 12px;
+            color: var(--outline);
+            margin-top: 4px;
+        }
+
+        /* Calendar Grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--outline-variant);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        /* Month Calendar */
+        .cal-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .cal-nav-btn {
+            background: none;
+            border: 1px solid var(--outline-variant);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--on-surface-variant);
+            transition: all 0.2s;
+        }
+
+        .cal-nav-btn:hover {
+            background: var(--surface-container-low);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .cal-month-label {
+            font-family: 'EB Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .cal-header {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--outline);
+            text-align: center;
+            padding: 8px 0;
+        }
+
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--on-surface);
+            cursor: default;
+            position: relative;
+            transition: all 0.2s;
+            gap: 2px;
+        }
+
+        .cal-day.empty {
+            pointer-events: none;
+        }
+
+        .cal-day.today {
+            background: var(--primary);
+            color: var(--on-primary);
+            font-weight: 700;
+        }
+
+        .cal-day.today .cal-dot {
+            background: var(--on-primary);
+        }
+
+        .cal-day.has-bill {
+            cursor: pointer;
+        }
+
+        .cal-day.has-bill:hover {
+            background: var(--surface-container-low);
+            transform: scale(1.08);
+        }
+
+        .cal-day.today.has-bill:hover {
+            background: var(--primary-container);
+        }
+
+        .cal-day.past {
+            color: var(--outline);
+        }
+
+        .cal-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .cal-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+        }
+
+        .cal-dot.overdue {
+            background: var(--loss);
+        }
+
+        .cal-dot.due-soon {
+            background: var(--gold);
+        }
+
+        .cal-dot.upcoming {
+            background: var(--blue);
+        }
+
+        .cal-dot.paid {
+            background: var(--gain);
+        }
+
+        /* Bill tooltip */
+        .cal-day .bill-tooltip {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: var(--on-primary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .cal-day .bill-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid var(--primary);
+        }
+
+        .cal-day.has-bill:hover .bill-tooltip {
+            display: block;
+        }
+
+        /* Upcoming Bills */
+        .bill-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(198, 198, 206, 0.3);
+            transition: all 0.15s;
+        }
+
+        .bill-item:last-child {
+            border-bottom: none;
+        }
+
+        .bill-item:hover {
+            background: var(--surface-container-low);
+            margin: 0 -12px;
+            padding-left: 12px;
+            padding-right: 12px;
+            border-radius: 10px;
+        }
+
+        .bill-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .bill-icon .material-symbols-outlined {
+            font-size: 22px;
+            font-variation-settings: 'FILL' 1;
+        }
+
+        .bill-icon.housing {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .bill-icon.utility {
+            background: #dbeafe;
+            color: #3b82f6;
+        }
+
+        .bill-icon.subscription {
+            background: #fce7f3;
+            color: #db2777;
+        }
+
+        .bill-icon.insurance {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .bill-icon.loan {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .bill-icon.phone {
+            background: #f0fdfa;
+            color: #0d9488;
+        }
+
+        .bill-icon.paid-icon {
+            background: var(--gain-bg);
+            color: var(--gain);
+        }
+
+        .bill-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .bill-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--on-surface);
+        }
+
+        .bill-due {
+            font-size: 11px;
+            color: var(--outline);
+            margin-top: 2px;
+        }
+
+        .bill-right {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .bill-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--on-surface);
+        }
+
+        .bill-status {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        .bill-status.overdue {
+            background: var(--loss-bg);
+            color: var(--loss);
+        }
+
+        .bill-status.due-today {
+            background: var(--gold-bg);
+            color: var(--gold);
+        }
+
+        .bill-status.due-soon {
+            background: var(--blue-bg);
+            color: var(--blue);
+        }
+
+        .bill-status.paid {
+            background: var(--gain-bg);
+            color: var(--gain);
+        }
+
+        .bill-status.scheduled {
+            background: var(--purple-bg);
+            color: var(--purple);
+        }
+
+        /* History */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(198, 198, 206, 0.3);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: var(--gain-bg);
+            color: var(--gain);
+        }
+
+        .history-icon .material-symbols-outlined {
+            font-size: 18px;
+            font-variation-settings: 'FILL' 1;
+        }
+
+        .history-info {
+            flex: 1;
+        }
+
+        .history-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--on-surface);
+        }
+
+        .history-date {
+            font-size: 11px;
+            color: var(--outline);
+        }
+
+        .history-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gain);
+        }
+
+        /* Recurring summary */
+        .recurring-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(198, 198, 206, 0.3);
+        }
+
+        .recurring-item:last-child {
+            border-bottom: none;
+        }
+
+        .recurring-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .recurring-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .recurring-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--on-surface);
+        }
+
+        .recurring-freq {
+            font-size: 11px;
+            color: var(--outline);
+        }
+
+        .recurring-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--on-surface);
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fade-in-up 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .animate-delay-1 {
+            animation-delay: 0.05s;
+        }
+
+        .animate-delay-2 {
+            animation-delay: 0.1s;
+        }
+
+        .animate-delay-3 {
+            animation-delay: 0.15s;
+        }
+
+        .animate-delay-4 {
+            animation-delay: 0.2s;
+        }
+
+        .animate-delay-5 {
+            animation-delay: 0.25s;
+        }
+
+        @media (max-width: 1200px) {
+            .calendar-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+
+            .scroll-area {
+                padding: 20px;
+            }
+
+            .top-bar {
+                padding: 0 20px;
+            }
+
+            .summary-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .summary-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h1>Lumina</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link" href="homepage.html"><span class="material-symbols-outlined">dashboard</span>
+                    Overview</a>
+                <a class="sidebar-link" href="marker.html"><span class="material-symbols-outlined">trending_up</span>
+                    Market</a>
+                <a class="sidebar-link" href="insights.html"><span class="material-symbols-outlined">menu_book</span>
+                    Insights</a>
+                <a class="sidebar-link" href="portfolio.html"><span
+                        class="material-symbols-outlined">account_balance_wallet</span> Portfolio</a>
+                <a class="sidebar-link" href="chat.html"><span class="material-symbols-outlined">chat</span> Advisor</a>
+                <a class="sidebar-link active" href="calendar.html"><span
+                        class="material-symbols-outlined">calendar_month</span> Calendar</a>
+            </nav>
+            <div class="market-pulse">
+                <div class="market-pulse-label">Market Pulse</div>
+                <div style="display:flex;align-items:baseline;"><span class="market-pulse-value">5,487.22</span><span
+                        class="market-pulse-change">+0.85%</span></div>
+                <div style="width:100%;height:36px;margin-top:10px;">
+                    <svg viewBox="0 0 200 40" preserveAspectRatio="none"
+                        style="width:100%;height:100%;overflow:visible;">
+                        <defs>
+                            <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#0c132c" stop-opacity="0.15" />
+                                <stop offset="100%" stop-color="#0c132c" stop-opacity="0" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,35 Q25,30 50,28 T100,22 T150,30 T200,8" fill="none" stroke="#0c132c"
+                            stroke-width="2" />
+                        <path d="M0,35 Q25,30 50,28 T100,22 T150,30 T200,8 L200,40 L0,40 Z" fill="url(#pg)" />
+                    </svg>
+                </div>
+            </div>
+            <div class="sidebar-footer"><a class="sidebar-link" href="#"><span
+                        class="material-symbols-outlined">settings</span> Settings</a></div>
+        </aside>
+
+        <div class="main-content">
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <h1 class="page-title">Bill Calendar</h1>
+                </div>
+                <div class="top-bar-right">
+                    <div class="time-display" id="live-clock"></div>
+                    <button class="icon-btn"><span class="material-symbols-outlined">notifications</span><span
+                            class="notification-badge"></span></button>
+                    <div class="avatar-section">
+                        <div class="avatar">JT</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="scroll-area">
+                <div class="content-grid">
+                    <!-- Summary Row -->
+                    <div class="summary-row animate-in animate-delay-1">
+                        <div class="summary-card total">
+                            <div class="summary-label">Monthly Total</div>
+                            <div class="summary-value" id="total-bills">$0</div>
+                            <div class="summary-sub" id="total-count">0 bills this month</div>
+                        </div>
+                        <div class="summary-card due">
+                            <div class="summary-label">Overdue</div>
+                            <div class="summary-value" id="overdue-amount" style="color:var(--loss);">$0</div>
+                            <div class="summary-sub" id="overdue-count">0 bills overdue</div>
+                        </div>
+                        <div class="summary-card paid">
+                            <div class="summary-label">Paid This Month</div>
+                            <div class="summary-value" id="paid-amount" style="color:var(--gain);">$0</div>
+                            <div class="summary-sub" id="paid-count">0 bills paid</div>
+                        </div>
+                        <div class="summary-card upcoming">
+                            <div class="summary-label">Due This Week</div>
+                            <div class="summary-value" id="week-amount" style="color:var(--gold);">$0</div>
+                            <div class="summary-sub" id="week-count">0 upcoming</div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar + Upcoming Bills -->
+                    <div class="calendar-grid">
+                        <div class="card animate-in animate-delay-2">
+                            <div class="cal-nav">
+                                <button class="cal-nav-btn" id="prev-month"><span
+                                        class="material-symbols-outlined">chevron_left</span></button>
+                                <span class="cal-month-label" id="month-label"></span>
+                                <button class="cal-nav-btn" id="next-month"><span
+                                        class="material-symbols-outlined">chevron_right</span></button>
+                            </div>
+                            <div class="cal-grid" id="calendar-grid"></div>
+                            <div style="margin-top:18px; display:flex; gap:18px; flex-wrap:wrap;">
+                                <div style="display:flex;align-items:center;gap:6px;"><span class="cal-dot overdue"
+                                        style="width:8px;height:8px;"></span><span
+                                        style="font-size:11px;color:var(--outline);font-weight:500;">Overdue</span>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:6px;"><span class="cal-dot due-soon"
+                                        style="width:8px;height:8px;"></span><span
+                                        style="font-size:11px;color:var(--outline);font-weight:500;">Due Soon</span>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:6px;"><span class="cal-dot upcoming"
+                                        style="width:8px;height:8px;"></span><span
+                                        style="font-size:11px;color:var(--outline);font-weight:500;">Upcoming</span>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:6px;"><span class="cal-dot paid"
+                                        style="width:8px;height:8px;"></span><span
+                                        style="font-size:11px;color:var(--outline);font-weight:500;">Paid</span></div>
+                            </div>
+                        </div>
+
+                        <div class="card animate-in animate-delay-3">
+                            <div class="section-subtitle">Upcoming</div>
+                            <h2 class="section-title" style="font-size:22px; margin-bottom:16px;">Bills Due</h2>
+                            <div id="bills-feed"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom: Payment History + Recurring -->
+                    <div class="bottom-grid">
+                        <div class="card animate-in animate-delay-4">
+                            <div class="section-header" style="margin-bottom:12px;">
+                                <div>
+                                    <div class="section-subtitle">History</div>
+                                    <h2 class="section-title" style="font-size:22px;">Recent Payments</h2>
+                                </div>
+                            </div>
+                            <div id="history-feed"></div>
+                        </div>
+
+                        <div class="card animate-in animate-delay-5">
+                            <div class="section-header" style="margin-bottom:12px;">
+                                <div>
+                                    <div class="section-subtitle">Monthly</div>
+                                    <h2 class="section-title" style="font-size:22px;">Recurring Bills</h2>
+                                </div>
+                            </div>
+                            <div id="recurring-feed"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('live-clock').textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) + ' IST';
+        }
+        updateClock(); setInterval(updateClock, 1000);
+
+        // Bills Data
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+        const currentDay = now.getDate();
+
+        const bills = [
+            { name: 'Rent / Mortgage', amount: 2450.00, day: 1, category: 'housing', icon: 'home', frequency: 'Monthly', autopay: true },
+            { name: 'Electric Bill', amount: 142.00, day: 5, category: 'utility', icon: 'bolt', frequency: 'Monthly', autopay: false },
+            { name: 'Water & Sewer', amount: 45.00, day: 7, category: 'utility', icon: 'water_drop', frequency: 'Monthly', autopay: true },
+            { name: 'Internet (Comcast)', amount: 79.99, day: 10, category: 'utility', icon: 'wifi', frequency: 'Monthly', autopay: true },
+            { name: 'Netflix', amount: 15.99, day: 12, category: 'subscription', icon: 'tv', frequency: 'Monthly', autopay: true },
+            { name: 'Phone Bill (T-Mobile)', amount: 85.00, day: 14, category: 'phone', icon: 'smartphone', frequency: 'Monthly', autopay: false },
+            { name: 'Car Insurance', amount: 186.50, day: 15, category: 'insurance', icon: 'shield', frequency: 'Monthly', autopay: true },
+            { name: 'Spotify Premium', amount: 9.99, day: 16, category: 'subscription', icon: 'headphones', frequency: 'Monthly', autopay: true },
+            { name: 'Health Insurance', amount: 320.00, day: 18, category: 'insurance', icon: 'health_and_safety', frequency: 'Monthly', autopay: true },
+            { name: 'Gym Membership', amount: 45.00, day: 20, category: 'subscription', icon: 'fitness_center', frequency: 'Monthly', autopay: true },
+            { name: 'Student Loan', amount: 485.00, day: 22, category: 'loan', icon: 'school', frequency: 'Monthly', autopay: false },
+            { name: 'Car Payment', amount: 398.00, day: 25, category: 'loan', icon: 'directions_car', frequency: 'Monthly', autopay: true },
+            { name: 'Credit Card (Visa)', amount: 750.00, day: 28, category: 'loan', icon: 'credit_card', frequency: 'Monthly', autopay: false },
+        ];
+
+        function getBillStatus(bill, viewYear, viewMonth) {
+            const billDate = new Date(viewYear, viewMonth, bill.day);
+            const today = new Date(currentYear, currentMonth, currentDay);
+            const diffDays = Math.floor((billDate - today) / (1000 * 60 * 60 * 24));
+
+            if (viewYear !== currentYear || viewMonth !== currentMonth) {
+                if (billDate < today) return 'paid';
+                return 'upcoming';
+            }
+
+            if (bill.day < currentDay) return 'paid';
+            if (bill.day === currentDay) return 'due-today';
+            if (diffDays <= 3) return 'due-soon';
+            if (diffDays <= 7) return 'due-soon';
+            return 'upcoming';
+        }
+
+        function getStatusLabel(status) {
+            switch (status) {
+                case 'overdue': return 'Overdue';
+                case 'due-today': return 'Due Today';
+                case 'due-soon': return 'Due Soon';
+                case 'paid': return 'Paid';
+                default: return 'Scheduled';
+            }
+        }
+
+        function getDotClass(status) {
+            switch (status) {
+                case 'overdue': return 'overdue';
+                case 'due-today': return 'due-soon';
+                case 'due-soon': return 'due-soon';
+                case 'paid': return 'paid';
+                default: return 'upcoming';
+            }
+        }
+
+        function getStatusBadgeClass(status) {
+            switch (status) {
+                case 'overdue': return 'overdue';
+                case 'due-today': return 'due-today';
+                case 'due-soon': return 'due-soon';
+                case 'paid': return 'paid';
+                default: return 'scheduled';
+            }
+        }
+
+        // Calendar
+        let viewYear = currentYear;
+        let viewMonth = currentMonth;
+
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        function renderCalendar() {
+            document.getElementById('month-label').textContent = `${monthNames[viewMonth]} ${viewYear}`;
+            const grid = document.getElementById('calendar-grid');
+            grid.innerHTML = '';
+
+            // Day headers
+            dayNames.forEach(d => {
+                grid.innerHTML += `<div class="cal-header">${d}</div>`;
+            });
+
+            const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+            const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+            // Build bill lookup by day
+            const billsByDay = {};
+            bills.forEach(b => {
+                const day = b.day <= daysInMonth ? b.day : daysInMonth;
+                if (!billsByDay[day]) billsByDay[day] = [];
+                billsByDay[day].push(b);
+            });
+
+            // Empty cells
+            for (let i = 0; i < firstDay; i++) {
+                grid.innerHTML += '<div class="cal-day empty"></div>';
+            }
+
+            // Day cells
+            for (let d = 1; d <= daysInMonth; d++) {
+                const isToday = d === currentDay && viewMonth === currentMonth && viewYear === currentYear;
+                const isPast = (viewYear < currentYear) || (viewYear === currentYear && viewMonth < currentMonth) || (viewYear === currentYear && viewMonth === currentMonth && d < currentDay);
+                const dayBills = billsByDay[d] || [];
+                const hasBill = dayBills.length > 0;
+
+                let dotsHtml = '';
+                let tooltipHtml = '';
+                if (hasBill) {
+                    dotsHtml = '<div class="cal-dots">';
+                    const tooltipItems = [];
+                    dayBills.forEach(b => {
+                        const status = getBillStatus(b, viewYear, viewMonth);
+                        dotsHtml += `<span class="cal-dot ${getDotClass(status)}"></span>`;
+                        tooltipItems.push(`${b.name}: $${b.amount.toFixed(2)}`);
+                    });
+                    dotsHtml += '</div>';
+                    tooltipHtml = `<div class="bill-tooltip">${tooltipItems.join('<br>')}</div>`;
+                }
+
+                const classes = ['cal-day'];
+                if (isToday) classes.push('today');
+                if (isPast && !isToday) classes.push('past');
+                if (hasBill) classes.push('has-bill');
+
+                grid.innerHTML += `<div class="${classes.join(' ')}">${d}${dotsHtml}${tooltipHtml}</div>`;
+            }
+        }
+
+        document.getElementById('prev-month').addEventListener('click', () => {
+            viewMonth--;
+            if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+            renderCalendar();
+        });
+        document.getElementById('next-month').addEventListener('click', () => {
+            viewMonth++;
+            if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+            renderCalendar();
+        });
+
+        renderCalendar();
+
+        // Upcoming Bills
+        function renderBills() {
+            const sorted = [...bills].sort((a, b) => {
+                const sa = getBillStatus(a, currentYear, currentMonth);
+                const sb = getBillStatus(b, currentYear, currentMonth);
+                const priority = { 'overdue': 0, 'due-today': 1, 'due-soon': 2, 'upcoming': 3, 'paid': 4 };
+                if (priority[sa] !== priority[sb]) return priority[sa] - priority[sb];
+                return a.day - b.day;
+            });
+
+            const unpaid = sorted.filter(b => getBillStatus(b, currentYear, currentMonth) !== 'paid');
+            const feed = document.getElementById('bills-feed');
+            feed.innerHTML = unpaid.map(b => {
+                const status = getBillStatus(b, currentYear, currentMonth);
+                const statusLabel = getStatusLabel(status);
+                const statusClass = getStatusBadgeClass(status);
+                const dueDate = new Date(currentYear, currentMonth, b.day);
+                const dueStr = dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                return `<div class="bill-item">
+                    <div class="bill-icon ${b.category}"><span class="material-symbols-outlined">${b.icon}</span></div>
+                    <div class="bill-info">
+                        <div class="bill-name">${b.name}</div>
+                        <div class="bill-due">Due ${dueStr}${b.autopay ? ' · Autopay' : ''}</div>
+                    </div>
+                    <div class="bill-right">
+                        <div class="bill-amount">$${b.amount.toFixed(2)}</div>
+                        <span class="bill-status ${statusClass}">${statusLabel}</span>
+                    </div>
+                </div>`;
+            }).join('');
+
+            if (unpaid.length === 0) {
+                feed.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--outline);"><span class="material-symbols-outlined" style="font-size:40px;display:block;margin-bottom:8px;opacity:0.4;">check_circle</span>All bills paid this month!</div>';
+            }
+        }
+        renderBills();
+
+        // Summary cards
+        function renderSummary() {
+            const total = bills.reduce((s, b) => s + b.amount, 0);
+            const paidBills = bills.filter(b => getBillStatus(b, currentYear, currentMonth) === 'paid');
+            const paidTotal = paidBills.reduce((s, b) => s + b.amount, 0);
+            const overdueBills = bills.filter(b => getBillStatus(b, currentYear, currentMonth) === 'overdue');
+            const overdueTotal = overdueBills.reduce((s, b) => s + b.amount, 0);
+
+            const weekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+            const weekBills = bills.filter(b => {
+                const status = getBillStatus(b, currentYear, currentMonth);
+                if (status === 'paid') return false;
+                const billDate = new Date(currentYear, currentMonth, b.day);
+                return billDate >= now && billDate <= weekFromNow;
+            });
+            const weekTotal = weekBills.reduce((s, b) => s + b.amount, 0);
+
+            document.getElementById('total-bills').textContent = `$${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+            document.getElementById('total-count').textContent = `${bills.length} bills this month`;
+            document.getElementById('overdue-amount').textContent = `$${overdueTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+            document.getElementById('overdue-count').textContent = `${overdueBills.length} bills overdue`;
+            document.getElementById('paid-amount').textContent = `$${paidTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+            document.getElementById('paid-count').textContent = `${paidBills.length} bills paid`;
+            document.getElementById('week-amount').textContent = `$${weekTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+            document.getElementById('week-count').textContent = `${weekBills.length} upcoming`;
+        }
+        renderSummary();
+
+        // Payment History
+        function renderHistory() {
+            const paidBills = bills.filter(b => getBillStatus(b, currentYear, currentMonth) === 'paid');
+            const feed = document.getElementById('history-feed');
+
+            if (paidBills.length === 0) {
+                feed.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--outline);font-size:13px;">No payments recorded yet this month</div>';
+                return;
+            }
+
+            feed.innerHTML = paidBills.sort((a, b) => b.day - a.day).map(b => {
+                const paidDate = new Date(currentYear, currentMonth, b.day);
+                const dateStr = paidDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                return `<div class="history-item">
+                    <div class="history-icon"><span class="material-symbols-outlined">check_circle</span></div>
+                    <div class="history-info">
+                        <div class="history-name">${b.name}</div>
+                        <div class="history-date">Paid on ${dateStr}${b.autopay ? ' · Autopay' : ''}</div>
+                    </div>
+                    <div class="history-amount">$${b.amount.toFixed(2)}</div>
+                </div>`;
+            }).join('');
+        }
+        renderHistory();
+
+        // Recurring Bills
+        function renderRecurring() {
+            const colors = { housing: '#7c3aed', utility: '#3b82f6', subscription: '#db2777', insurance: '#059669', loan: '#d97706', phone: '#0d9488' };
+            const feed = document.getElementById('recurring-feed');
+            feed.innerHTML = bills.map(b => {
+                return `<div class="recurring-item">
+                    <div class="recurring-left">
+                        <span class="recurring-dot" style="background:${colors[b.category] || '#76767e'}"></span>
+                        <div>
+                            <div class="recurring-name">${b.name}</div>
+                            <div class="recurring-freq">${b.frequency} · Day ${b.day}</div>
+                        </div>
+                    </div>
+                    <span class="recurring-amount">$${b.amount.toFixed(2)}</span>
+                </div>`;
+            }).join('');
+        }
+        renderRecurring();
+    </script>
+</body>
+
+</html>

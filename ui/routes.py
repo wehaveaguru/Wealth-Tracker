@@ -5,10 +5,12 @@ import csv
 import io
 import json
 from agent import get_response
+from typing import Optional
 
 
 class ChatResponse(pydantic.BaseModel):
     response: str
+    file_context: Optional[str] = None
 
 
 app = FastAPI(title="Lumina Insights API")
@@ -268,9 +270,92 @@ async def analyze_statement(file: UploadFile = File(...)):
     return transactions
 
 
+@app.post("/advisor/upload")
+async def upload_advisor_file(file: UploadFile = File(...)):
+    filename = file.filename.lower()
+    content = await file.read()
+    
+    # Supported extensions: .csv, .pdf, .txt
+    if filename.endswith('.csv'):
+        try:
+            text = content.decode('utf-8')
+        except UnicodeDecodeError:
+            text = content.decode('latin-1')
+        
+        transactions = parse_csv_content(text)
+        if transactions:
+            formatted = "| Merchant | Category | Amount |\n| --- | --- | --- |\n"
+            for t in transactions:
+                formatted += f"| {t['merchant']} | {t['category']} | ${t['amount']:.2f} |\n"
+            return {"file_context": formatted, "filename": file.filename}
+        else:
+            return {"file_context": text[:10000], "filename": file.filename}
+            
+    elif filename.endswith('.pdf'):
+        try:
+            import pdfplumber
+        except ImportError:
+            raise HTTPException(
+                status_code=500,
+                detail="PDF support requires pdfplumber. Install it with: pip install pdfplumber"
+            )
+        
+        try:
+            with pdfplumber.open(io.BytesIO(content)) as pdf:
+                text_pages = []
+                for page in pdf.pages:
+                    text_pages.append(page.extract_text() or "")
+                pdf_text = "\n".join(text_pages)
+                
+                # If pdf text is empty, try tables
+                if not pdf_text.strip():
+                    transactions = []
+                    for page in pdf.pages:
+                        tables = page.extract_tables()
+                        for table in tables:
+                            for row in table:
+                                if not row:
+                                    continue
+                                cleaned = [cell.strip() if cell else '' for cell in row]
+                                amount = None
+                                merchant = ''
+                                for cell in cleaned:
+                                    val = cell.replace('$', '').replace(',', '').replace('"', '')
+                                    try:
+                                        amount = abs(float(val))
+                                    except ValueError:
+                                        if len(cell) > len(merchant) and not cell.replace('-', '').replace('/', '').isdigit():
+                                            merchant = cell
+                                if amount and amount > 0 and merchant:
+                                    transactions.append({
+                                        "merchant": merchant,
+                                        "category": categorize_merchant(merchant),
+                                        "amount": round(amount, 2)
+                                    })
+                    if transactions:
+                        formatted = "| Merchant | Category | Amount |\n| --- | --- | --- |\n"
+                        for t in transactions:
+                            formatted += f"| {t['merchant']} | {t['category']} | ${t['amount']:.2f} |\n"
+                        return {"file_context": formatted, "filename": file.filename}
+                
+                return {"file_context": pdf_text[:10000], "filename": file.filename}
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"Failed to parse PDF: {str(e)}")
+            
+    elif filename.endswith('.txt'):
+        try:
+            text = content.decode('utf-8')
+        except UnicodeDecodeError:
+            text = content.decode('latin-1')
+        return {"file_context": text[:10000], "filename": file.filename}
+        
+    else:
+        raise HTTPException(status_code=400, detail="Unsupported file format. Please upload CSV, PDF, or TXT.")
+
+
 @app.post("/advisor")
 async def chat_response(body: ChatResponse):
-    response_text = get_response(body.response)
+    response_text = get_response(body.response, body.file_context)
     print(response_text)
 
     return {"response" : response_text}
